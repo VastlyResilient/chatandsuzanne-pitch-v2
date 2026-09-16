@@ -236,7 +236,8 @@ function boot(){
   $('#bellBtn').onclick = () => { go('today'); toast('Six things happened since Friday — see the activity river', 'bell'); };
   $('#railUser').onclick = () => toast('Signed in as Andy Sklover · Beyond Limits Academics', 'shield');
   $('#themeBtn').onclick = () => {
-    const dark = document.documentElement.dataset.theme === 'dark';
+    const set = document.documentElement.dataset.theme;
+    const dark = set ? set === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     document.documentElement.dataset.theme = dark ? 'light' : 'dark';
     toast(dark ? 'Daylight mode' : 'Evening mode — for the office sessions that run late', 'spark');
   };
@@ -1284,10 +1285,28 @@ WIRE.bridge = () => {
   $('#dlBtn').onclick = () => {
     const rows = exportRows(), head = Object.keys(rows[0]);
     const csv = [head.join(','), ...rows.map(r => head.map(k => csvCell(r[k])).join(','))].join('\n');
-    const url = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
-    const a = document.createElement('a');
-    a.href = url; a.download = 'beyond-limits-parentsquare-import.csv'; a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const url = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
+      const link = document.createElement('a');
+      link.href = url; link.download = 'beyond-limits-parentsquare-import.csv'; link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) { /* some viewers block a page-initiated download — the panel below is the fallback */ }
+    openDrawer(`
+      <div class="drawer__head">
+        <button class="drawer__close" aria-label="Close the export panel">${ico('x')}</button>
+        <div style="font-size:19px;font-weight:700;letter-spacing:-.02em">ParentSquare import file</div>
+        <div class="muted" style="font-size:12.5px;margin-top:4px">${rows.length} rows · participant code in <span class="mono">student_sis_id</span></div>
+      </div>
+      <div class="drawer__body">
+        <p class="muted" style="font-size:12.5px;line-height:1.6">If your browser saved the file, it is in your downloads. If it blocked it — some viewers do — copy it from here.</p>
+        <button class="btn btn--primary" id="copyCsv" style="align-self:flex-start">${ico('file')} Copy the CSV</button>
+        <div class="csv" style="max-height:52vh"><pre style="white-space:pre;margin:0">${esc(csv)}</pre></div>
+      </div>`, 'ParentSquare import file');
+    const copy = $('#copyCsv');
+    if (copy) copy.onclick = async () => {
+      try { await navigator.clipboard.writeText(csv); toast('CSV copied to your clipboard', 'check'); }
+      catch (e) { toast('Copy blocked here — select the text below instead', 'warn'); }
+    };
     toast(`${rows.length} rows exported — blank codes included so nothing hides`, 'down');
   };
 };
