@@ -265,7 +265,7 @@ function boot(){
 /* ══════════════════════════════════════════════════════════════
    helpers shared by the screens
    ══════════════════════════════════════════════════════════════ */
-function spark(points, color){
+function spark(points, color){ /* color is a CSS custom property, so it follows the theme */
   const w = 96, h = 42, max = Math.max(...points), min = Math.min(...points);
   const d = points.map((p, i) => {
     const x = (i / (points.length - 1)) * w;
@@ -273,8 +273,8 @@ function spark(points, color){
     return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
   }).join(' ');
   return `<svg class="kpi__spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
-    <path d="${d} L${w},${h} L0,${h} Z" fill="${color}" opacity=".12"/>
-    <path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+    <path d="${d} L${w},${h} L0,${h} Z" style="fill:var(${color})" opacity=".12"/>
+    <path d="${d}" fill="none" style="stroke:var(${color})" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 }
 
 function progTag(p){
@@ -320,11 +320,13 @@ function reach(){
 VIEWS.today = () => {
   const c = BL.counts();
   const pct = Math.round(c.coded / c.total * 100);
-  const openMatches = BL.matches.filter(m => m.status === 'open').length;
+  const open = BL.matches.filter(m => m.status === 'open');
+  const openMatches = open.length;
+  const openNames = open.map(m => m.left.name.split(', ').reverse().join(' ')).join(', ');
 
   const queue = [
     { ico:'users', bg:'var(--sky-bg)', fg:'var(--sky)', step:'STEP 1',
-      t:'Clean the family list', d:`39 families deleted by Andy. ${openMatches ? `${openMatches} still need his decision — Ethan Shalauddin, Annabella Rojas, Anthony Lopez.` : 'Every duplicate has been resolved.'}`, go:'merge' },
+      t:'Clean the family list', d:`39 families deleted by Andy. ${openMatches ? `${openMatches} still need his decision — ${openNames}.` : 'Every duplicate has been resolved.'}`, go:'merge' },
     { ico:'hash', bg:'var(--gold-100)', fg:'var(--amber)', step:'STEP 2',
       t:'Put a participant code on every family', d:`${c.missing} of ${c.total} families still ${c.missing === 1 ? 'has' : 'have'} no code. No codes, no ParentSquare.`, go:'codes' },
     { ico:'qr', bg:'var(--violet-bg)', fg:'var(--violet)', step:'STEP 3',
@@ -362,16 +364,16 @@ VIEWS.today = () => {
   <div class="kpis stagger">
     <div class="kpi"><div class="kpi__label">${ico('users')} Active families</div>
       <div class="kpi__val">${c.total}</div><div class="kpi__sub">152 listed → 39 removed by Andy</div>
-      ${spark([152,148,141,134,126,119,115,113], '#1F6FEB')}</div>
+      ${spark([152,148,141,134,126,119,115,113], '--sky')}</div>
     <div class="kpi kpi--alert"><div class="kpi__label">${ico('hash')} Codes outstanding</div>
       <div class="kpi__val">${c.missing}</div><div class="kpi__sub">${c.codesIssued} codes in the workbook, ${c.coded} families holding one</div>
-      ${spark([113,113,112,111,110,108,106,105], '#B8790B')}</div>
+      ${spark([113,113,112,111,110,108,106,105], '--amber')}</div>
     <div class="kpi"><div class="kpi__label">${ico('merge')} Duplicate identities</div>
       <div class="kpi__val">${openMatches}</div><div class="kpi__sub">held for review — never auto-merged</div>
-      ${spark([0,1,1,2,2,3,3,3], '#D93A45')}</div>
+      ${spark([0,1,1,2,2,3,3,3], '--rose')}</div>
     <div class="kpi"><div class="kpi__label">${ico('file')} Agreements outstanding</div>
       <div class="kpi__val">${c.noAgreement}</div><div class="kpi__sub">${c.starfishUnsigned} pasted Starfish rows never signed that form</div>
-      ${spark([34,31,29,27,25,24,22,21], '#0E9F6E')}</div>
+      ${spark([34,31,29,27,25,24,22,21], '--mint')}</div>
   </div>
 
   <div class="quotes stagger">
@@ -646,7 +648,7 @@ VIEWS.codes = () => {
 
       <div class="migrate">
         <div class="beforeafter">
-          <h4>Today — three series, one collision</h4>
+          <h4>Today — three series${twoProgram && twoProgram.extraCode ? ', one collision' : ''}</h4>
           ${legacy.map(f => `<div class="oldcode"><s>${esc(f.code)}</s><span class="muted" style="font-size:11px">${esc(f.name)}</span></div>`).join('')}
           ${twoProgram && twoProgram.extraCode ? `<div class="oldcode"><s>${esc(twoProgram.extraCode)}</s><span class="tag tag--bffs">second identity, same child</span></div>` : ''}
         </div>
@@ -1108,7 +1110,7 @@ VIEWS.onboarding = () => {
             <div class="qrcard__qr">${fakeQR('BL-' + x.p)}</div>
             <b>${esc(x.p)}</b>
             <small>${esc(BL.PROGRAMS[x.p].blurb)}</small>
-            <div class="qrcard__bar"><i style="width:${x.pct}%;background:${BL.PROGRAMS[x.p].color}"></i></div>
+            <div class="qrcard__bar"><i style="width:${x.pct}%;background:var(${BL.PROGRAMS[x.p].color})"></i></div>
             <small style="display:block;margin-top:7px">${x.signed}/${x.total} agreements signed</small>
           </div>`).join('')}
       </div>

@@ -14,11 +14,11 @@ const BL = (() => {
   const int = (a, b) => a + Math.floor(rnd() * (b - a + 1));
 
   const PROGRAMS = {
-    Main:      { key:'Main',      label:'Main',      tag:'main',      color:'#1F6FEB', blurb:'Core tutoring & mentoring' },
-    Horizons:  { key:'Horizons',  label:'Horizons',  tag:'horizons',  color:'#6E56CF', blurb:'Horizons at New Canaan partnership' },
-    SCSE:      { key:'SCSE',      label:'SCSE',      tag:'scse',      color:'#0E9F6E', blurb:'Stamford Charter School for Excellence' },
-    Starfish:  { key:'Starfish',  label:'Starfish',  tag:'starfish',  color:'#B8790B', blurb:'Starfish cohort — added Sept 2026' },
-    BFFS:      { key:'BFFS',      label:'BFFS',      tag:'bffs',      color:'#D93A45', blurb:'Unlabeled group in Andy’s dashboard — 13 families, all 9th/10th grade' }
+    Main:      { key:'Main',      label:'Main',      tag:'main',      color:'--sky', blurb:'Core tutoring & mentoring' },
+    Horizons:  { key:'Horizons',  label:'Horizons',  tag:'horizons',  color:'--violet', blurb:'Horizons at New Canaan partnership' },
+    SCSE:      { key:'SCSE',      label:'SCSE',      tag:'scse',      color:'--mint', blurb:'Stamford Charter School for Excellence' },
+    Starfish:  { key:'Starfish',  label:'Starfish',  tag:'starfish',  color:'--amber', blurb:'Starfish cohort — added Sept 2026' },
+    BFFS:      { key:'BFFS',      label:'BFFS',      tag:'bffs',      color:'--rose', blurb:'Unlabeled group in Andy’s dashboard — 13 families, all 9th/10th grade' }
   };
 
   const FIRST = ['Ethan','Annabella','Anthony','Mia','Jayden','Sofia','Marcus','Camila','Elijah','Valentina','Isaiah','Luna','Josiah','Emely','Nathaniel','Genesis','Caleb','Nayeli','Andre','Yaretzi','Damari','Kimberly','Jaylen','Estrella','Malachi','Britney','Amir','Jazmin','Devon','Adriana','Kaden','Melany','Terrence','Wilnise','Jordan','Fabiola','Tyrese','Rosalie','Xavier','Dariana','Micah','Kenia','Omar','Yamilet','Darnell','Leydi','Kevin','Marisol','Joel','Nathalie','Samir','Dulce','Trey','Katerin','Brandon','Aliyah','Jonas','Perla','Ruben','Shanice','Diego','Naomi','Kelvin','Arianna','Manuel','Zuri','Edwin','Iliana','Tobias','Marielys','Sean','Jocelyn','Hector','Abigail','Roland','Solange','Nasir','Paola','Ivan','Destiny','Byron','Milagros','Cedric','Kayla','Angel','Vianney','Darius','Britany','Elias','Mireya','Hassan','Odalys','Quincy','Wendy','Rashad','Yesenia','Simon','Karla','Dante','Lisbeth','Emmanuel','Tatiana','Cristian','Aracely','Malik','Belkis','Gio','Nadia','Roberto','Sarai','Julien','Esmeralda'];
