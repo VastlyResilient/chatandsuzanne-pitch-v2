@@ -22,12 +22,11 @@ const BL = (() => {
   };
 
   const FIRST = ['Ethan','Annabella','Anthony','Mia','Jayden','Sofia','Marcus','Camila','Elijah','Valentina','Isaiah','Luna','Josiah','Emely','Nathaniel','Genesis','Caleb','Nayeli','Andre','Yaretzi','Damari','Kimberly','Jaylen','Estrella','Malachi','Britney','Amir','Jazmin','Devon','Adriana','Kaden','Melany','Terrence','Wilnise','Jordan','Fabiola','Tyrese','Rosalie','Xavier','Dariana','Micah','Kenia','Omar','Yamilet','Darnell','Leydi','Kevin','Marisol','Joel','Nathalie','Samir','Dulce','Trey','Katerin','Brandon','Aliyah','Jonas','Perla','Ruben','Shanice','Diego','Naomi','Kelvin','Arianna','Manuel','Zuri','Edwin','Iliana','Tobias','Marielys','Sean','Jocelyn','Hector','Abigail','Roland','Solange','Nasir','Paola','Ivan','Destiny','Byron','Milagros','Cedric','Kayla','Angel','Vianney','Darius','Britany','Elias','Mireya','Hassan','Odalys','Quincy','Wendy','Rashad','Yesenia','Simon','Karla','Dante','Lisbeth','Emmanuel','Tatiana','Cristian','Aracely','Malik','Belkis','Gio','Nadia','Roberto','Sarai','Julien','Esmeralda'];
-  const LAST = ['Shalauddin','Rojas','Lopez','Guzman','Pierre-Louis','Mendoza','Alvarado','Jean-Baptiste','Ramirez','Osei','Castillo','Duverge','Nguyen','Perez','Toussaint','Vasquez','Almonte','Beauvais','Cordero','Etienne','Figueroa','Gomes','Hernandez','Innocent','Joseph','Kouassi','Lara','Marte','Narcisse','Ortiz','Paulino','Quezada','Reyes','Saint-Fleur','Tavarez','Ureña','Valdez','Wilson','Ximenes','Yepez','Zapata','Aguilar','Baptiste','Colon','Delgado','Espinal','Fernandez','Garcia','Hyppolite','Ibarra','Jimenez','Kadri','Leon','Moreno','Nunez','Oviedo','Peña','Rosario','Santana','Torres','Ulloa','Vargas','Williams','Zelaya','Amaya','Bonilla','Cruz','Diaz','Escobar','Flores','Grullon','Hidalgo','Iglesias','Javier','Khan','Lucas','Montero','Nieves','Olivares'];
+  const LAST = ['Pierre-Louis','Mendoza','Alvarado','Jean-Baptiste','Ramirez','Osei','Castillo','Duverge','Nguyen','Perez','Toussaint','Vasquez','Almonte','Beauvais','Cordero','Etienne','Figueroa','Gomes','Hernandez','Innocent','Joseph','Kouassi','Lara','Marte','Narcisse','Ortiz','Paulino','Quezada','Reyes','Saint-Fleur','Tavarez','Ureña','Valdez','Wilson','Ximenes','Yepez','Zapata','Aguilar','Baptiste','Colon','Delgado','Espinal','Fernandez','Garcia','Hyppolite','Ibarra','Jimenez','Kadri','Leon','Moreno','Nunez','Oviedo','Peña','Rosario','Santana','Torres','Ulloa','Vargas','Williams','Zelaya','Amaya','Bonilla','Cruz','Diaz','Escobar','Flores','Grullon','Hidalgo','Iglesias','Javier','Khan','Lucas','Montero','Nieves','Olivares'];
   const GUARD = ['Mother','Father','Grandmother','Aunt','Guardian','Grandfather','Stepmother'];
   const LANGS  = ['English','English','English','Spanish','Spanish','Spanish','Haitian Creole','Portuguese'];
   const SCHOOLS = ['Rippowam MS','Cloonan MS','Turn of River MS','Dolan MS','Westhill HS','Stamford HS','AITE','SCSE','Roxbury ES','Hart Magnet'];
 
-  const pad = n => String(n).padStart(4, '0');
   const iso = (y,m,d) => `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 
   /* ── families ── */
@@ -165,7 +164,7 @@ const BL = (() => {
     { id:'p1', author:'Andy Sklover', initials:'AS', when:'Yesterday · 4:12 PM', audience:'All families · 113',
       title:'Fall schedule is live',
       body:'Tutoring resumes Tuesday 9/15 at the Yerwood Center, 4:30–6:00 PM. Bring your Chromebook and your math packet. Reply here if your pickup time has changed.',
-      sent:113, delivered:111, read:96, replies:14, langs:['EN','ES','HT'] },
+      sent:113, delivered:111, read:96, replies:14, langs:['EN','ES','HT','PT'] },
     { id:'p2', author:'Andy Sklover', initials:'AS', when:'Mon · 9:05 AM', audience:'Horizons · 21',
       title:'Horizons bus change — New Canaan',
       body:'The 3:45 pickup moves to the Fairfield Ave entrance starting this week. Same driver, same time, new door.',
@@ -244,7 +243,7 @@ const BL = (() => {
   ];
 
   const activity = [
-    { ico:'code',  t:'<b>BL-2026-0011</b> issued to Reyes, Jordan — first code under the new single series', time:'3 minutes ago' },
+    { ico:'code',  t:'', time:'queued — first code under the new single series' },
     { ico:'merge', t:'Merge held for review: <b>Shalauddin, Ethan</b> — 98% match, two codes', time:'18 minutes ago' },
     { ico:'msg',   t:'Attendance nudge sent to <b>4 families</b> · 3 replied within the hour', time:'Today, 8:00 AM' },
     { ico:'check', t:'<b>Starfish</b> tab restructured — code field added, 4 rows realigned', time:'Yesterday, 6:41 PM' },
@@ -274,7 +273,7 @@ const BL = (() => {
   posts[3].body = `${scseUnsigned} SCSE families still owe a signed agreement. The link below takes two minutes on a phone.`;
 
   const firstUncoded = families.find(f => !f.code && !f.flags.some(x => x !== 'no-code')) || families[0];
-  activity[0].t = `<b>BL-2026-${String(c0.coded + 1).padStart(4, '0')}</b> is the next number in line — for <b>${firstUncoded.name}</b>, under the new single series`;
+  activity[0].t = `<b>BL-2026-${String(c0.coded + 1).padStart(4, '0')}</b> is next in line — it goes to <b>${firstUncoded.name}</b> when the back-fill runs`;
   activity[4].t = `<b>${scseUnsigned} SCSE families</b> still owe a participation agreement`;
 
   return { PROGRAMS, families, counts, matches, posts, rules, script, botFlow, mapping, defects, activity, openQuestions };

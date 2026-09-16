@@ -115,6 +115,18 @@ function toast(text, icon = 'check'){
 
 /* ── drawer ── */
 let lastFocus = null;
+const FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[contenteditable="true"],[tabindex]:not([tabindex="-1"])';
+/* aria-modal tells assistive tech the rest of the page is inert — so the tab
+   ring has to actually stay inside the dialog */
+function trapTab(e, dialog){
+  if (e.key !== 'Tab') return;
+  const items = $$(FOCUSABLE, dialog).filter(el => el.offsetParent !== null || el === document.activeElement);
+  if (!items.length) return;
+  const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  else if (!dialog.contains(document.activeElement)){ e.preventDefault(); first.focus(); }
+}
 function openDrawer(html, label = 'Family record'){
   const d = $('#drawer');
   lastFocus = document.activeElement;
@@ -236,6 +248,10 @@ function boot(){
   document.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); togglePalette(!$('#palette').classList.contains('is-on')); }
     if (e.key === 'Escape'){ togglePalette(false); closeDrawer(); }
+    if (e.key === 'Tab'){
+      if ($('#palette').classList.contains('is-on')) trapTab(e, $('#palette'));
+      else if ($('#drawer').classList.contains('is-on')) trapTab(e, $('#drawer'));
+    }
     if (e.key === 'Enter' && $('#palette').classList.contains('is-on')){
       const items = paletteItems($('#paletteInput').value);
       if (items[paletteSel]){ items[paletteSel].run(); togglePalette(false); }
@@ -453,6 +469,8 @@ VIEWS.families = () => {
       </tr></thead>
       <tbody id="famBody">${famRows(filtered())}</tbody>
     </table>
+  </div>
+  <div class="table-foot-wrap">
     <div class="tablefoot">
       <span id="famCount">${filtered().length} of ${c.total} families</span>
       <span>Click any row for the full record, the merge history and every code ever issued</span>
@@ -526,6 +544,7 @@ function familyDrawer(id){
       <div style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap">
         ${f.programs.map(progTag).join('')}
         ${f.code ? `<span class="tag tag--quiet mono">${esc(f.code)}</span>` : `<span class="tag tag--starfish">no code yet</span>`}
+        ${f.extraCode ? `<span class="tag tag--bffs mono">${esc(f.extraCode)}</span>` : ''}
       </div>
     </div>
     <div class="drawer__body">
@@ -535,6 +554,7 @@ function familyDrawer(id){
       <div class="dsection">
         <h5>Identity</h5>
         <div class="dkv"><span>Participant code</span><b class="mono">${f.code ? esc(f.code) : '— to be issued —'}</b></div>
+        ${f.extraCode ? `<div class="dkv"><span>Second code issued in error</span><b class="mono" style="color:var(--rose)">${esc(f.extraCode)}</b></div>` : ''}
         <div class="dkv"><span>Programs</span><b>${f.programs.map(esc).join(' · ')}</b></div>
         <div class="dkv"><span>Joined</span><b>${esc(f.joined)}</b></div>
         <div class="dkv"><span>Agreement</span><b>${f.agreement ? 'On file' : 'Outstanding'}</b></div>
@@ -561,6 +581,7 @@ function familyDrawer(id){
           <div class="tl"><span class="tl__pin"></span><div><b>Participation agreement submitted</b><small>${esc(f.joined)} · PA (${esc(f.programs[0])})</small></div></div>
           ${f.programs.length > 1 ? `<div class="tl"><span class="tl__pin"></span><div><b>Added to ${esc(f.programs[1])}</b><small>Second agreement on file — identity unchanged</small></div></div>` : ''}
           ${f.code ? `<div class="tl"><span class="tl__pin"></span><div><b>Code ${esc(f.code)} issued</b><small>Will migrate to the BL-2026 series</small></div></div>` : `<div class="tl"><span class="tl__pin"></span><div><b>Awaiting a code</b><small>Queued for the back-fill run</small></div></div>`}
+          ${f.extraCode ? `<div class="tl"><span class="tl__pin" style="border-color:var(--rose)"></span><div><b>${esc(f.extraCode)} issued to the same child</b><small>The second agreement created a second identity — held on the Merge Desk</small></div></div>` : ''}
         </div>
       </div>
 
@@ -755,7 +776,7 @@ function matchCard(m){
       <div class="resolved">
         ${ico('check','i')}
         <div style="font-weight:600;margin-top:8px">${esc(m.left.name)} — merged</div>
-        <p class="muted" style="font-size:12.5px;margin-top:6px">One identity, both agreements kept on file. The surviving code is ${esc(m.left.code)}.</p>
+        <p class="muted" style="font-size:12.5px;margin-top:6px">One identity, both agreements kept on file. The surviving code is ${esc(m.left.code)}${m.retired ? `, and ${esc(m.retired)} is retired — never reissued to anyone else` : ''}.</p>
       </div></div>`;
   const col = m.confidence > 95 ? 'var(--rose)' : 'var(--amber)';
   const row = (k, a, b) => `<div class="fieldrow ${a === b ? 'is-same' : 'is-diff'}"><span>${esc(k)}</span>
@@ -806,11 +827,16 @@ WIRE.merge = () => {
     m.status = 'merged';
     if (m.left.code === '—') m.left.code = nextCode();
     const f = BL.families.find(x => x.name === m.left.name);
+    let retired = null;
     if (f){
       f.flags = f.flags.filter(x => x !== 'duplicate' && x !== 'two-codes');
       if (!f.code){ f.code = m.left.code; f.flags = f.flags.filter(x => x !== 'no-code'); }
+      if (f.extraCode){ retired = f.extraCode; f.extraCode = null; }
+      m.retired = retired;
     }
-    toast(`${m.left.name} is one family again — both agreements kept`, 'merge');
+    toast(retired
+      ? `${m.left.name} is one family again — ${retired} retired, both agreements kept`
+      : `${m.left.name} is one family again — both agreements kept`, 'merge');
     go('merge');
   });
   $$('[data-keep]').forEach(b => b.onclick = () => toast('Kept separate. The pair will not be offered again.', 'eye'));
@@ -904,6 +930,10 @@ VIEWS.square = () => {
           <div class="bubble">
             <div class="bubble__from">Kreyòl ayisyen</div>
             Leson patikilye yo rekòmanse madi 15/9, 4:30–6:00 nan Yerwood Center.
+          </div>
+          <div class="bubble">
+            <div class="bubble__from">Português</div>
+            As aulas recomeçam terça-feira 15/9, das 4:30 às 6:00, no Yerwood Center.
           </div>
           <div class="delivery">
             <span>${ico('check')} delivered 111/113</span><span>${ico('eye')} read 85%</span>
@@ -1280,7 +1310,7 @@ VIEWS.health = () => {
   <div class="fam-head">
     <div>
       <h1>Workbook Health</h1>
-      <p>Everything we found on 7 September, reading every tab, column and cell of the live file — and what happens to each one. ${fixed} of the ${BL.defects.filter(d => d.state !== 'risk').length} defects are already closed, and one of them is not a defect at all.</p>
+      <p>Everything we found on 7 September, reading every tab, column and cell of the live file — and what happens to each one. ${fixed} of the ${BL.defects.filter(d => d.state !== 'risk').length} defects are already closed — plus one item that is not a defect at all.</p>
     </div>
     <span class="tag tag--quiet" style="padding:8px 14px">2024-27 BL Families · 11 tabs</span>
   </div>
