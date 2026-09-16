@@ -33,7 +33,7 @@
           <circle cx="18" cy="18" r="15.5" class="migration__val" id="migrationVal"></circle>
         </svg>
         <div>
-          <b id="migrationPct">8%</b>
+          <b id="migrationPct">—</b>
           <span>ParentSquare ready</span>
         </div>
       </div>
@@ -72,17 +72,17 @@
 
   <!-- ░░ DRAWER ░░ -->
   <div class="scrim" id="scrim"></div>
-  <aside class="drawer" id="drawer" aria-hidden="true"></aside>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true"></aside>
 
   <!-- ░░ COMMAND PALETTE ░░ -->
-  <div class="palette" id="palette" aria-hidden="true">
+  <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
     <div class="palette__box">
       <div class="palette__input">
         <svg viewBox="0 0 24 24" class="i"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="paletteInput" placeholder="Jump to a family, a code, a program, a screen…" autocomplete="off">
+        <input id="paletteInput" aria-label="Search families, codes and screens" placeholder="Jump to a family, a code, a program, a screen…" autocomplete="off">
         <kbd>esc</kbd>
       </div>
-      <div class="palette__results" id="paletteResults"></div>
+      <div class="palette__results" id="paletteResults" role="listbox" aria-label="Results"></div>
     </div>
   </div>
 

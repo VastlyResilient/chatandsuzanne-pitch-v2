@@ -33,7 +33,8 @@ const ICO = {
   globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.4 2.5 3.6 5.4 3.6 8.5S14.4 18 12 20.5C9.6 18 8.4 15.1 8.4 12S9.6 6 12 3.5z"/>',
   eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
   reply:'<path d="M10 8L4 13l6 5"/><path d="M4 13h9a6 6 0 016 6v1"/>',
-  lock:'<rect x="4.5" y="10" width="15" height="10.5" rx="3"/><path d="M8 10V7.5a4 4 0 018 0V10"/>'
+  lock:'<rect x="4.5" y="10" width="15" height="10.5" rx="3"/><path d="M8 10V7.5a4 4 0 018 0V10"/>',
+  book:'<path d="M4 5.5A2.5 2.5 0 016.5 3H19v14H6.5A2.5 2.5 0 004 19.5z"/><path d="M4 19.5A2.5 2.5 0 016.5 17H19v4H6.5A2.5 2.5 0 014 19.5z"/><path d="M8 7.5h7M8 10.5h5"/>'
 };
 const ico = (n, cls = 'i') => `<svg viewBox="0 0 24 24" class="${cls}">${ICO[n] || ''}</svg>`;
 
@@ -59,6 +60,17 @@ const CRUMB = {
   onboarding:['Onboarding','Orientation'], bridge:['Onboarding','ParentSquare Bridge'], health:['Onboarding','Workbook Health']
 };
 
+/* the only place a new participant code is minted — mirrors the rule the
+   real generator holds to: never reuse a number, never guess one */
+function nextCode(){
+  const used = new Set();
+  BL.families.forEach(f => { if (f.code) used.add(f.code); if (f.extraCode) used.add(f.extraCode); });
+  BL.matches.forEach(m => { if (m.left.code && m.left.code !== '—') used.add(m.left.code); });
+  let n = 1, code;
+  do { code = 'BL-2026-' + String(n++).padStart(4, '0'); } while (used.has(code));
+  return code;
+}
+
 /* ── app state ── */
 const S = {
   route:'today',
@@ -66,8 +78,7 @@ const S = {
   program:'All',
   onlyMissing:false,
   audience:{ programs:['All'], grades:'All', unsignedOnly:false },
-  translate:true,
-  botStep:0
+  translate:true
 };
 
 /* ── chrome ── */
@@ -103,26 +114,38 @@ function toast(text, icon = 'check'){
 }
 
 /* ── drawer ── */
-function openDrawer(html){
-  $('#drawer').innerHTML = html;
-  $('#drawer').classList.add('is-on');
-  $('#drawer').setAttribute('aria-hidden','false');
+let lastFocus = null;
+function openDrawer(html, label = 'Family record'){
+  const d = $('#drawer');
+  lastFocus = document.activeElement;
+  d.innerHTML = html;
+  d.setAttribute('aria-label', label);
+  d.classList.add('is-on');
+  d.setAttribute('aria-hidden','false');
   $('#scrim').classList.add('is-on');
   const c = $('.drawer__close');
-  if (c) c.onclick = closeDrawer;
+  if (c){ c.onclick = closeDrawer; c.focus(); }
 }
 function closeDrawer(){
-  $('#drawer').classList.remove('is-on');
-  $('#drawer').setAttribute('aria-hidden','true');
+  const d = $('#drawer');
+  if (!d.classList.contains('is-on')) return;
+  d.classList.remove('is-on');
+  d.setAttribute('aria-hidden','true');
   $('#scrim').classList.remove('is-on');
+  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  lastFocus = null;
 }
 
 /* ── router ── */
 const VIEWS = {};
+let pendingTimers = [];
+const later = (fn, ms) => pendingTimers.push(setTimeout(fn, ms));
+function clearPending(){ pendingTimers.forEach(clearTimeout); pendingTimers = []; }
 function go(route, opts = {}){
+  clearPending();
   if (!VIEWS[route]) route = 'today';
   S.route = route;
-  if (!opts.silent) history.replaceState(null, '', '#' + route);
+  if (!opts.silent && location.hash !== '#' + route) history.pushState(null, '', '#' + route);
   renderNav(); renderCrumb();
   const v = $('#view');
   v.innerHTML = VIEWS[route]();
@@ -153,24 +176,35 @@ function paletteItems(q){
   }
   return out.slice(0, 12);
 }
+let paletteSel = 0;
 function drawPalette(){
   const items = paletteItems($('#paletteInput').value);
+  paletteSel = Math.min(paletteSel, Math.max(items.length - 1, 0));
   let last = '';
   $('#paletteResults').innerHTML = items.length ? items.map((it, i) => {
     const head = it.group !== last ? `<div class="pgroup">${it.group}</div>` : '';
     last = it.group;
-    return head + `<div class="pres ${i === 0 ? 'is-sel' : ''}" data-i="${i}">
-      <span class="pres__ico">${ico(it.icon)}</span><span>${esc(it.label)}</span>
+    return head + `<div class="pres ${i === paletteSel ? 'is-sel' : ''}" data-i="${i}" role="option"
+      aria-selected="${i === paletteSel}"><span class="pres__ico">${ico(it.icon)}</span><span>${esc(it.label)}</span>
       <span class="pres__k">${esc(it.hint)}</span></div>`;
   }).join('') : `<div class="pgroup">No match — try a family name, a code, or a screen</div>`;
   $$('.pres').forEach(el => el.onclick = () => { items[+el.dataset.i].run(); togglePalette(false); });
   return items;
 }
+function movePalette(step){
+  const items = paletteItems($('#paletteInput').value);
+  if (!items.length) return;
+  paletteSel = (paletteSel + step + items.length) % items.length;
+  drawPalette();
+  const sel = $('.pres.is-sel');
+  if (sel) sel.scrollIntoView({ block:'nearest' });
+}
 function togglePalette(on){
   const p = $('#palette');
   p.classList.toggle('is-on', on);
   p.setAttribute('aria-hidden', String(!on));
-  if (on){ $('#paletteInput').value = ''; drawPalette(); $('#paletteInput').focus(); }
+  if (on){ lastFocus = document.activeElement; $('#paletteInput').value = ''; paletteSel = 0; drawPalette(); $('#paletteInput').focus(); }
+  else if (lastFocus && document.contains(lastFocus) && !$('#drawer').classList.contains('is-on')){ lastFocus.focus(); lastFocus = null; }
 }
 
 /* ── boot ── */
@@ -179,6 +213,11 @@ function boot(){
   document.addEventListener('click', e => {
     const g = e.target.closest('[data-go]');
     if (g) go(g.dataset.go);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const g = e.target.closest && e.target.closest('[data-go][role="button"]');
+    if (g){ e.preventDefault(); go(g.dataset.go); }
   });
   $('#scrim').onclick = closeDrawer;
   $('#cmdkBtn').onclick = () => togglePalette(true);
@@ -189,16 +228,21 @@ function boot(){
     document.documentElement.dataset.theme = dark ? 'light' : 'dark';
     toast(dark ? 'Daylight mode' : 'Evening mode — for the office sessions that run late', 'spark');
   };
-  $('#paletteInput').addEventListener('input', drawPalette);
+  $('#paletteInput').addEventListener('input', () => { paletteSel = 0; drawPalette(); });
+  $('#paletteInput').addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown'){ e.preventDefault(); movePalette(1); }
+    if (e.key === 'ArrowUp'){ e.preventDefault(); movePalette(-1); }
+  });
   document.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); togglePalette(!$('#palette').classList.contains('is-on')); }
     if (e.key === 'Escape'){ togglePalette(false); closeDrawer(); }
     if (e.key === 'Enter' && $('#palette').classList.contains('is-on')){
       const items = paletteItems($('#paletteInput').value);
-      if (items[0]){ items[0].run(); togglePalette(false); }
+      if (items[paletteSel]){ items[paletteSel].run(); togglePalette(false); }
     }
   });
   $('#palette').addEventListener('click', e => { if (e.target.id === 'palette') togglePalette(false); });
+  window.addEventListener('popstate', () => go(location.hash.replace('#','') || 'today', { silent:true }));
   go(location.hash.replace('#','') || 'today', { silent:true });
 }
 
@@ -228,6 +272,7 @@ function initials(name){
 }
 
 /* a deterministic decorative QR-looking block — not a scannable code */
+/* decorative only — a real code is minted server-side from the family record */
 function fakeQR(seedStr, fg = '#0A1A35'){
   let s = 0; for (const ch of seedStr) s = (s * 31 + ch.charCodeAt(0)) % 99991;
   const n = 11, cells = [];
@@ -238,7 +283,7 @@ function fakeQR(seedStr, fg = '#0A1A35'){
                       : (s % 100) > 52;
     if (on) cells.push(`<rect x="${x}" y="${y}" width="1" height="1"/>`);
   }
-  return `<svg viewBox="0 0 ${n} ${n}" fill="${fg}" shape-rendering="crispEdges">${cells.join('')}</svg>`;
+  return `<svg viewBox="0 0 ${n} ${n}" fill="${fg}" shape-rendering="crispEdges" aria-hidden="true" focusable="false">${cells.join('')}</svg>`;
 }
 
 function reach(){
@@ -263,7 +308,7 @@ VIEWS.today = () => {
 
   const queue = [
     { ico:'users', bg:'var(--sky-bg)', fg:'var(--sky)', step:'STEP 1',
-      t:'Clean the family list', d:`39 families deleted by Andy. 2 still need his decision — Annabella Rojas and Anthony Lopez.`, go:'merge' },
+      t:'Clean the family list', d:`39 families deleted by Andy. ${openMatches ? `${openMatches} still need his decision — Ethan Shalauddin, Annabella Rojas, Anthony Lopez.` : 'Every duplicate has been resolved.'}`, go:'merge' },
     { ico:'hash', bg:'var(--gold-100)', fg:'var(--amber)', step:'STEP 2',
       t:'Put a participant code on every family', d:`${c.missing} of ${c.total} families still ${c.missing === 1 ? 'has' : 'have'} no code. No codes, no ParentSquare.`, go:'codes' },
     { ico:'qr', bg:'var(--violet-bg)', fg:'var(--violet)', step:'STEP 3',
@@ -273,7 +318,8 @@ VIEWS.today = () => {
   return `
   <section class="today-hero fade-in">
     <div>
-      <span class="today-hero__stamp">${ico('bolt')} Wednesday · 16 September 2026</span>
+      <span class="today-hero__stamp">${ico('bolt')} ${(() => { const d = new Date(), f = (o) => d.toLocaleDateString('en-US', o);
+        return `${f({ weekday:'long' })} · ${f({ day:'numeric' })} ${f({ month:'long' })} ${f({ year:'numeric' })}`; })()}</span>
       <h1>Good morning, Andy.<br>${c.missing
         ? `Today the back end is <em>${c.missing} code${c.missing === 1 ? '' : 's'}</em> short.`
         : `Every family carries a <em>code</em> today.`}</h1>
@@ -291,7 +337,7 @@ VIEWS.today = () => {
         <i class="a" style="width:${pct}%"></i><i class="b" style="width:${100 - pct}%"></i>
       </div>
       <div class="codeclock__legend">
-        <span><i style="background:var(--gold-500)"></i> ${c.coded} issued</span>
+        <span><i style="background:var(--gold-500)"></i> ${c.coded} coded${c.codesIssued > c.coded ? ` · ${c.codesIssued} codes` : ''}</span>
         <span><i style="background:rgba(255,255,255,.35)"></i> ${c.missing} to back-fill</span>
       </div>
     </div>
@@ -302,24 +348,31 @@ VIEWS.today = () => {
       <div class="kpi__val">${c.total}</div><div class="kpi__sub">152 listed → 39 removed by Andy</div>
       ${spark([152,148,141,134,126,119,115,113], '#1F6FEB')}</div>
     <div class="kpi kpi--alert"><div class="kpi__label">${ico('hash')} Codes outstanding</div>
-      <div class="kpi__val">${c.missing}</div><div class="kpi__sub">one afternoon in the office clears it</div>
+      <div class="kpi__val">${c.missing}</div><div class="kpi__sub">${c.codesIssued} codes in the workbook, ${c.coded} families holding one</div>
       ${spark([113,113,112,111,110,108,106,105], '#B8790B')}</div>
     <div class="kpi"><div class="kpi__label">${ico('merge')} Duplicate identities</div>
       <div class="kpi__val">${openMatches}</div><div class="kpi__sub">held for review — never auto-merged</div>
       ${spark([0,1,1,2,2,3,3,3], '#D93A45')}</div>
     <div class="kpi"><div class="kpi__label">${ico('file')} Agreements outstanding</div>
-      <div class="kpi__val">${c.noAgreement}</div><div class="kpi__sub">4 of them never signed a Starfish form</div>
+      <div class="kpi__val">${c.noAgreement}</div><div class="kpi__sub">${c.starfishUnsigned} pasted Starfish rows never signed that form</div>
       ${spark([34,31,29,27,25,24,22,21], '#0E9F6E')}</div>
+  </div>
+
+  <div class="quotes stagger">
+    ${[['This coding is number one.','Zoom call · 5 Sept 2026'],
+       ['I could look at the greatest front-facing thing, but if these codes get screwed up on the back end… it’s going to be worse.','Zoom call · 5 Sept 2026'],
+       ['Once we have these codes, it’ll help us with that ParentSquare transition.','Zoom call · 5 Sept 2026']]
+      .map(q => `<figure class="quote"><p>${esc(q[0])}</p><small>${esc(q[1])}</small></figure>`).join('')}
   </div>
 
   <div class="today-grid">
     <div class="queue">
       <div class="queue__head">
         ${ico('bolt')}<h3>The build order — in Andy’s words</h3>
-        <span class="tag tag--quiet" style="margin-left:auto">“This coding is number one.”</span>
+        <span class="tag tag--quiet" style="margin-left:auto">his order, not ours</span>
       </div>
       ${queue.map(q => `
-        <div class="queue__item" data-go="${q.go}">
+        <div class="queue__item" data-go="${q.go}" tabindex="0" role="button">
           <span class="queue__ico" style="background:${q.bg};color:${q.fg}">${ico(q.ico)}</span>
           <div><div class="queue__t">${esc(q.t)}</div><div class="queue__d">${esc(q.d)}</div></div>
           <div style="text-align:right"><div class="queue__step">${q.step}</div>
@@ -410,7 +463,7 @@ VIEWS.families = () => {
 function famRows(list){
   if (!list.length) return `<tr><td colspan="7"><div class="empty">Nothing matches that. Try a last name, or a code like BLA-2026.</div></td></tr>`;
   return list.map(f => `
-    <tr data-fam="${f.id}">
+    <tr data-fam="${f.id}" tabindex="0" role="button" aria-label="Open the record for ${esc(f.name)}">
       <td><div class="fam__who">
         <span class="avatar avatar--sm">${esc(initials(f.name))}</span>
         <div><div class="fam__name">${esc(f.name)}</div>
@@ -438,8 +491,13 @@ function refreshFam(){
   $('#famCount').textContent = `${list.length} of ${BL.counts().total} families`;
   bindFamRows();
 }
+/* click and keyboard land on the same handler — nothing here is mouse-only */
+function activate(el, fn){
+  el.onclick = fn;
+  el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fn(); } };
+}
 function bindFamRows(){
-  $$('#famBody tr[data-fam]').forEach(tr => tr.onclick = () => familyDrawer(tr.dataset.fam));
+  $$('#famBody tr[data-fam]').forEach(tr => activate(tr, () => familyDrawer(tr.dataset.fam)));
 }
 
 WIRE.families = () => {
@@ -457,7 +515,7 @@ function familyDrawer(id){
   const missed = att.filter(a => !a).length;
   openDrawer(`
     <div class="drawer__head">
-      <button class="drawer__close">${ico('x')}</button>
+      <button class="drawer__close" aria-label="Close family record">${ico('x')}</button>
       <div style="display:flex;align-items:center;gap:13px">
         <span class="avatar" style="width:46px;height:46px;border-radius:15px;font-size:15px">${esc(initials(f.name))}</span>
         <div>
@@ -519,7 +577,7 @@ function familyDrawer(id){
     if (a === 'message'){ closeDrawer(); go('square'); toast(`Composer aimed at ${f.name} · ${f.lang}`, 'msg'); }
     if (a === 'code'){
       if (f.code){ toast(`${f.name} already holds ${f.code} — one family, one code`, 'shield'); return; }
-      f.code = 'BL-2026-' + String(BL.families.filter(x => x.code).length + 1).padStart(4, '0');
+      f.code = nextCode();
       f.flags = f.flags.filter(x => x !== 'no-code');
       toast(`${f.code} issued to ${f.name}`, 'hash');
       closeDrawer(); go('families');
@@ -532,7 +590,9 @@ function familyDrawer(id){
    ══════════════════════════════════════════════════════════════ */
 VIEWS.codes = () => {
   const c = BL.counts();
-  const legacy = BL.families.filter(f => f.code && /^BL[AHS]-/.test(f.code)).slice(0, 6);
+  const legacy = BL.families.filter(f => f.code && /^BL[AHS]-/.test(f.code));
+  const seq = String(c.coded + 1).padStart(4, '0');
+  const twoProgram = legacy.find(f => f.programs.length > 1);
   return `
   <div class="fam-head">
     <div>
@@ -549,17 +609,17 @@ VIEWS.codes = () => {
         <h2>One series for all of Beyond Limits</h2>
         <p>Today the program is baked into the prefix — BLA, BLH, BLS. Andy has asked to move families between programs, and a code that changes on transfer is not an identifier. The program moves into its own editable column.</p>
         <div class="codebuild">
-          <div class="seg"><b>BL</b><span>Organisation</span></div>
+          <div class="seg"><b>BL</b><span>Organization</span></div>
           <span class="seg__dash">–</span>
           <div class="seg"><b>2026</b><span>Cohort year</span></div>
           <span class="seg__dash">–</span>
-          <div class="seg seg--gold"><b>0011</b><span>Sequence</span></div>
+          <div class="seg seg--gold"><b>${seq}</b><span>Sequence</span></div>
           <div style="margin-left:14px;align-self:center">
             <div class="tag tag--scse tag--dot">program stored separately</div>
           </div>
         </div>
         <div class="blueprint__note">${ico('warn')}
-          <div>Do it now, at ${c.coded} codes. Not later, at ${c.total}. The only thing that gates this: has a code already been printed, texted or put in a calendar anywhere outside the workbook?</div>
+          <div>Do it now, at ${c.codesIssued} codes. Not later, at ${c.total}. The only thing that gates this: has a code already been printed, texted or put in a calendar anywhere outside the workbook?</div>
         </div>
       </section>
 
@@ -567,13 +627,12 @@ VIEWS.codes = () => {
         <div class="beforeafter">
           <h4>Today — three series, one collision</h4>
           ${legacy.map(f => `<div class="oldcode"><s>${esc(f.code)}</s><span class="muted" style="font-size:11px">${esc(f.name)}</span></div>`).join('')}
-          <div class="oldcode"><s>BLA-2026-0003</s><span class="tag tag--bffs">duplicate identity</span></div>
+          ${twoProgram && twoProgram.extraCode ? `<div class="oldcode"><s>${esc(twoProgram.extraCode)}</s><span class="tag tag--bffs">second identity, same child</span></div>` : ''}
         </div>
         <div class="beforeafter" style="border-color:var(--mint)">
           <h4>After — one series, program in its own column</h4>
           ${legacy.map((f, i) => `<div class="oldcode"><span>BL-2026-${String(i + 1).padStart(4, '0')}</span>
-            <span class="arrowpill">${esc(f.programs[0])}</span></div>`).join('')}
-          <div class="oldcode"><span>BL-2026-0007</span><span class="arrowpill">Main + SCSE</span></div>
+            <span class="arrowpill">${esc(f.programs.join(' + '))}</span></div>`).join('')}
         </div>
       </div>
 
@@ -631,7 +690,7 @@ WIRE.codes = () => {
       ['done › dry run complete. Nothing written. Press again to commit.', 3050]
     ];
     con.innerHTML = '';
-    lines.forEach(([t, ms], i) => setTimeout(() => {
+    lines.forEach(([t, ms], i) => later(() => {
       con.insertAdjacentHTML('beforeend', `<div>${t}</div>`);
       con.scrollTop = con.scrollHeight;
       bar.style.width = ((i + 1) / lines.length * 100) + '%';
@@ -651,10 +710,9 @@ WIRE.codes = () => {
     }, ms));
   };
   function commit(){
-    let n = BL.families.filter(f => f.code).length;
     BL.families.forEach(f => {
       if (f.code || f.flags.includes('duplicate')) return;
-      n++; f.code = 'BL-2026-' + String(n).padStart(4, '0');
+      f.code = nextCode();
       f.flags = f.flags.filter(x => x !== 'no-code');
     });
     toast('Codes written. Every family that is not held for review now has one.', 'check');
@@ -671,7 +729,7 @@ VIEWS.merge = () => {
   <div class="merge-head">
     <div>
       <h1>Merge Desk</h1>
-      <p style="font-size:13.5px;color:var(--ink-3);margin-top:5px;max-width:70ch;line-height:1.6">Andy requires a separate agreement per program — a family submitting twice is correct behaviour. The mistake was never the parent’s; it was the system issuing a second identity. Nothing here merges itself.</p>
+      <p style="font-size:13.5px;color:var(--ink-3);margin-top:5px;max-width:70ch;line-height:1.6">Andy requires a separate agreement per program — a family submitting twice is correct behavior. The mistake was never the parent’s; it was the system issuing a second identity. Nothing here merges itself.</p>
     </div>
     <div style="display:flex;gap:9px">
       <span class="tag tag--quiet" style="padding:8px 14px">Matched on name + date of birth</span>
@@ -700,7 +758,8 @@ function matchCard(m){
         <p class="muted" style="font-size:12.5px;margin-top:6px">One identity, both agreements kept on file. The surviving code is ${esc(m.left.code)}.</p>
       </div></div>`;
   const col = m.confidence > 95 ? 'var(--rose)' : 'var(--amber)';
-  const row = (k, a, b) => `<div class="fieldrow ${a === b ? 'is-same' : 'is-diff'}"><span>${esc(k)}</span><b>${esc(a)}</b></div>`;
+  const row = (k, a, b) => `<div class="fieldrow ${a === b ? 'is-same' : 'is-diff'}"><span>${esc(k)}</span>
+      <b><span aria-hidden="true">${a === b ? '✓' : '≠'}</span> ${esc(a)}<span class="sr">${a === b ? ' — matches' : ' — differs'}</span></b></div>`;
   return `
   <div class="matchcard" data-match="${m.id}">
     <div class="matchcard__top">
@@ -745,7 +804,7 @@ WIRE.merge = () => {
   $$('[data-merge]').forEach(b => b.onclick = () => {
     const m = BL.matches.find(x => x.id === b.dataset.merge);
     m.status = 'merged';
-    if (m.left.code === '—') m.left.code = 'BL-2026-0009';
+    if (m.left.code === '—') m.left.code = nextCode();
     const f = BL.families.find(x => x.name === m.left.name);
     if (f){
       f.flags = f.flags.filter(x => x !== 'duplicate' && x !== 'two-codes');
@@ -792,7 +851,8 @@ VIEWS.square = () => {
           <input class="field" id="postTitle" placeholder="Subject — “Fall schedule is live”" value="Tutoring resumes Tuesday">
           <textarea class="field" id="postBody" rows="5" placeholder="Write it once.">We start back Tuesday 9/15 at the Yerwood Center, 4:30–6:00 PM. Bring your Chromebook. Reply here if your pickup time has changed — I read every reply.</textarea>
           <div class="langrow">
-            <span class="switch ${S.translate ? 'is-on' : ''}" id="transSwitch"></span>
+            <button class="switch ${S.translate ? 'is-on' : ''}" id="transSwitch" role="switch"
+              aria-checked="${S.translate}" aria-label="Translate per household"></button>
             <span>Translate per household — ${esc(langs.join(', '))}</span>
             <span class="tag tag--quiet" style="margin-left:auto">${ico('shield')} No student ever sees this</span>
           </div>
@@ -875,6 +935,7 @@ WIRE.square = () => {
   $('#transSwitch').onclick = () => {
     S.translate = !S.translate;
     $('#transSwitch').classList.toggle('is-on', S.translate);
+    $('#transSwitch').setAttribute('aria-checked', String(S.translate));
     toast(S.translate ? 'Translation on — each household gets their own language' : 'Translation off — English only', 'globe');
   };
   $('#postBody').addEventListener('input', e => {
@@ -916,7 +977,7 @@ VIEWS.nudges = () => {
 
         <div class="flownode">
           <span class="flownode__ico" style="background:var(--sky-bg);color:var(--sky)">${ico('clock')}</span>
-          <div><b>When a family misses <span class="flowedit" id="thresh">2 sessions</span> in a <span class="flowedit" id="win">rolling 3 weeks</span></b>
+          <div><b>When a family misses <button class="flowedit" id="thresh">2 sessions</button> in a <button class="flowedit" id="win">rolling 3 weeks</button></b>
             <p>Counted from the tutor’s check-in, across every program the family belongs to.</p></div>
         </div>
         <div class="flowlink"></div>
@@ -950,7 +1011,8 @@ VIEWS.nudges = () => {
         <div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
           ${BL.rules.map(r => `
             <div style="display:flex;align-items:center;gap:11px;padding:12px 13px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)">
-              <span class="switch ${r.on ? 'is-on' : ''}" data-rule="${r.id}"></span>
+              <button class="switch ${r.on ? 'is-on' : ''}" data-rule="${r.id}" role="switch"
+                aria-checked="${r.on}" aria-label="${esc(r.name)}"></button>
               <div style="min-width:0">
                 <b style="font-size:13px">${esc(r.name)}</b>
                 <div class="muted" style="font-size:11.5px;margin-top:2px">${esc(r.channel)} · fired ${r.fired}× · ${r.replied} replied</div>
@@ -965,7 +1027,7 @@ VIEWS.nudges = () => {
           <p class="muted" style="font-size:11.5px;margin-top:5px">Last 8 sessions · red is a miss</p>
         </div>
         ${watch.map(w => `
-          <div class="wl" data-fam="${w.f.id}" style="cursor:pointer">
+          <div class="wl" data-fam="${w.f.id}" style="cursor:pointer" tabindex="0" role="button" aria-label="Open the record for ${esc(w.f.name)}">
             <div><b>${esc(w.f.name)}</b><small>Gr ${w.f.grade} · ${esc(w.f.programs.join(' · '))} · ${esc(w.f.lang)}</small>
               <div class="dots">${w.f.attendance.map(a => `<i class="${a ? '' : 'miss'}"></i>`).join('')}</div></div>
             <span class="tag ${w.recent >= 2 ? 'tag--bffs' : 'tag--starfish'}">${w.missed} missed</span>
@@ -980,9 +1042,10 @@ WIRE.nudges = () => {
     const r = BL.rules.find(x => x.id === s.dataset.rule);
     r.on = !r.on;
     s.classList.toggle('is-on', r.on);
+    s.setAttribute('aria-checked', String(r.on));
     toast(`${r.name} — ${r.on ? 'on' : 'paused'}`, 'bolt');
   });
-  $$('.wl[data-fam]').forEach(el => el.onclick = () => familyDrawer(el.dataset.fam));
+  $$('.wl[data-fam]').forEach(el => activate(el, () => familyDrawer(el.dataset.fam)));
   $('#thresh').onclick = () => toast('Threshold is Andy’s to set — 2, 3 or 4 sessions', 'edit');
   $('#win').onclick = () => toast('Window: rolling 3 weeks, a month, or consecutive sessions', 'edit');
   $('#newRule').onclick = () => toast('Rules are plain sentences: when → who → what → then', 'plus');
@@ -995,14 +1058,14 @@ VIEWS.onboarding = () => {
   const c = BL.counts();
   const perProgram = Object.keys(BL.PROGRAMS).filter(p => p !== 'BFFS').map(p => {
     const fams = BL.families.filter(f => f.programs.includes(p));
-    const signed = fams.filter(f => f.agreement).length;
+    const signed = fams.filter(f => f.agreement && !(p === 'Starfish' && f.flags.includes('pasted'))).length;
     return { p, total: fams.length, signed, pct: fams.length ? Math.round(signed / fams.length * 100) : 0 };
   });
   return `
   <div class="fam-head">
     <div>
       <h1>Orientation</h1>
-      <p>Andy gives the same mini-lecture every time a family arrives. This gives it for him — asks the affiliation first, because the agreement differs by program, then hands over the right QR code. No avatar, no face: a book and a calculator, the way he asked.</p>
+      <p>Andy gives the same mini-lecture every time a family arrives. This gives it for him — asks the affiliation first, because the agreement differs by program, then hands over the right QR code. No avatar, no face — an object, the way he asked.</p>
     </div>
     <span class="tag tag--starfish" style="padding:8px 14px">${c.noAgreement} agreements outstanding</span>
   </div>
@@ -1045,7 +1108,7 @@ VIEWS.onboarding = () => {
 
     <aside class="bot">
       <div class="bot__head">
-        <span class="bot__mark">${ico('file')}</span>
+        <span class="bot__mark" aria-hidden="true">${ico('book')}</span>
         <div><b>Orientation guide</b><small>an object, not a person — as requested</small></div>
         <button class="btn btn--sm" id="botReset" style="margin-left:auto;background:rgba(255,255,255,.1);color:#fff">Restart</button>
       </div>
@@ -1099,6 +1162,7 @@ WIRE.onboarding = () => {
 /* ══════════════════════════════════════════════════════════════
    08 · PARENTSQUARE BRIDGE
    ══════════════════════════════════════════════════════════════ */
+const csvCell = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
 function exportRows(){
   return BL.families.map(f => ({
     student_sis_id: f.code || '',
@@ -1158,7 +1222,7 @@ VIEWS.bridge = () => {
         </div>
         <div class="csv">
           <div class="h">${head.join(',')}</div>
-          ${rows.map(r => `<div>${head.map(k => esc(String(r[k] || '—'))).join(',')}</div>`).join('')}
+          ${rows.map(r => `<div>${head.map(k => esc(csvCell(r[k]))).join(',')}</div>`).join('')}
         </div>
       </div>
     </div>
@@ -1167,6 +1231,7 @@ VIEWS.bridge = () => {
       <div class="card pad-lg">
         <div class="sect-title">Readiness</div>
         <div style="font-size:34px;font-weight:700;letter-spacing:-.03em;margin:10px 0 2px">${ready}<span style="font-size:15px;color:var(--ink-3);font-weight:500"> / ${c.total} rows importable</span></div>
+        <p class="muted" style="font-size:12px;line-height:1.55">A row is importable when the family holds a code <em>and</em> a signed agreement. The CSV exports all ${c.total} either way — a blank code should be visible, not hidden.</p>
         <div class="bar" style="background:var(--paper-2);margin:12px 0 18px"><i class="a" style="width:${Math.round(ready / c.total * 100)}%;background:var(--navy-700)"></i></div>
         <div class="checklist">
           ${checks.map(k => `<div class="ck is-${k.s}">
@@ -1186,7 +1251,7 @@ VIEWS.bridge = () => {
 WIRE.bridge = () => {
   $('#dlBtn').onclick = () => {
     const rows = exportRows(), head = Object.keys(rows[0]);
-    const csv = [head.join(','), ...rows.map(r => head.map(k => `"${String(r[k] ?? '').replace(/"/g,'""')}"`).join(','))].join('\n');
+    const csv = [head.join(','), ...rows.map(r => head.map(k => csvCell(r[k])).join(','))].join('\n');
     const url = URL.createObjectURL(new Blob([csv], { type:'text/csv' }));
     const a = document.createElement('a');
     a.href = url; a.download = 'beyond-limits-parentsquare-import.csv'; a.click();
@@ -1202,7 +1267,7 @@ VIEWS.health = () => {
   const fixed = BL.defects.filter(d => d.state === 'fixed').length;
   const tabs = [
     ['Directory','12 × 2','A contents page','ok'],
-    ['Master – 2024-26 BL Families','357 × 26','Three pivot tables. No code column, no language column.','warn'],
+    ['Master – 2024-27 BL Families','357 × 26','Three pivot tables. No code column, no language column.','warn'],
     ['Sheet13 / 14 / 15','1 × 1 each','Empty. Ours. Deleted.','fixed'],
     ['DS Letters','49 × 6','Discounted-services tracking — moved out of the family workbook.','fixed'],
     ['BL Families Dashboard','1045 × 14','74 cells of content, three broken formulas.','warn'],
@@ -1215,7 +1280,7 @@ VIEWS.health = () => {
   <div class="fam-head">
     <div>
       <h1>Workbook Health</h1>
-      <p>Everything we found on 7 September, reading every tab, column and cell of the live file — and what happens to each one. ${fixed} of ${BL.defects.length} already closed.</p>
+      <p>Everything we found on 7 September, reading every tab, column and cell of the live file — and what happens to each one. ${fixed} of the ${BL.defects.filter(d => d.state !== 'risk').length} defects are already closed, and one of them is not a defect at all.</p>
     </div>
     <span class="tag tag--quiet" style="padding:8px 14px">2024-27 BL Families · 11 tabs</span>
   </div>

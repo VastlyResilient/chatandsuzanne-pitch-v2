@@ -1,7 +1,8 @@
 /* ══════════════════════════════════════════════════════════════
    Beyond Limits Connect — demo dataset
-   Modelled on the real 2024-27 BL Families workbook:
-   113 active families · 4 programs · 9 codes issued · 105 to go
+   Modeled on the real 2024-27 BL Families workbook: 113 active families,
+   4 programs, 9 codes sitting in the workbook — one family holding two of
+   them — and 105 families carrying none.
    ══════════════════════════════════════════════════════════════ */
 
 const BL = (() => {
@@ -17,7 +18,7 @@ const BL = (() => {
     Horizons:  { key:'Horizons',  label:'Horizons',  tag:'horizons',  color:'#6E56CF', blurb:'Horizons at New Canaan partnership' },
     SCSE:      { key:'SCSE',      label:'SCSE',      tag:'scse',      color:'#0E9F6E', blurb:'Stamford Charter School for Excellence' },
     Starfish:  { key:'Starfish',  label:'Starfish',  tag:'starfish',  color:'#B8790B', blurb:'Starfish cohort — added Sept 2026' },
-    BFFS:      { key:'BFFS',      label:'BFFS',      tag:'bffs',      color:'#D93A45', blurb:'Unlabelled group in Andy’s dashboard — 13 families, all 9th/10th grade' }
+    BFFS:      { key:'BFFS',      label:'BFFS',      tag:'bffs',      color:'#D93A45', blurb:'Unlabeled group in Andy’s dashboard — 13 families, all 9th/10th grade' }
   };
 
   const FIRST = ['Ethan','Annabella','Anthony','Mia','Jayden','Sofia','Marcus','Camila','Elijah','Valentina','Isaiah','Luna','Josiah','Emely','Nathaniel','Genesis','Caleb','Nayeli','Andre','Yaretzi','Damari','Kimberly','Jaylen','Estrella','Malachi','Britney','Amir','Jazmin','Devon','Adriana','Kaden','Melany','Terrence','Wilnise','Jordan','Fabiola','Tyrese','Rosalie','Xavier','Dariana','Micah','Kenia','Omar','Yamilet','Darnell','Leydi','Kevin','Marisol','Joel','Nathalie','Samir','Dulce','Trey','Katerin','Brandon','Aliyah','Jonas','Perla','Ruben','Shanice','Diego','Naomi','Kelvin','Arianna','Manuel','Zuri','Edwin','Iliana','Tobias','Marielys','Sean','Jocelyn','Hector','Abigail','Roland','Solange','Nasir','Paola','Ivan','Destiny','Byron','Milagros','Cedric','Kayla','Angel','Vianney','Darius','Britany','Elias','Mireya','Hassan','Odalys','Quincy','Wendy','Rashad','Yesenia','Simon','Karla','Dante','Lisbeth','Emmanuel','Tatiana','Cristian','Aracely','Malik','Belkis','Gio','Nadia','Roberto','Sarai','Julien','Esmeralda'];
@@ -28,17 +29,6 @@ const BL = (() => {
 
   const pad = n => String(n).padStart(4, '0');
   const iso = (y,m,d) => `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-
-  /* ── the nine codes that actually exist today, exactly as found ── */
-  const LEGACY = {
-    'Shalauddin, Ethan|Main':  'BLA-2026-0002',
-    'Shalauddin, Ethan|SCSE':  'BLA-2026-0003',
-    'Rojas, Annabella|Main':   'BLA-2026-0001',
-    'Guzman, Mia|Horizons':    'BLH-2026-0001',
-    'Mendoza, Sofia|Horizons': 'BLH-2026-0002',
-    'Alvarado, Marcus|SCSE':   'BLS-2026-0001',
-    'Ramirez, Camila|Main':    'BLA-2026-0004'
-  };
 
   /* ── families ── */
   const families = [];
@@ -51,7 +41,6 @@ const BL = (() => {
     const grade = over.grade ?? int(4, 10);
     const programs = over.programs || ['Main'];
     const lang = over.lang || pick(LANGS);
-    const legacyKey = `${last}, ${first}|${programs[0]}`;
     const f = {
       id: 'f' + seq,
       first, last,
@@ -65,7 +54,8 @@ const BL = (() => {
       phone: over.phone || `203-${int(200,899)}-${int(1000,9999)}`,
       email: `${first.toLowerCase()}.${last.toLowerCase().replace(/[^a-z]/g,'')}@email.com`,
       joined: over.joined || iso(int(2024,2026), int(1,12), int(1,28)),
-      code: over.code ?? (LEGACY[legacyKey] || null),
+      code: over.code ?? null,
+      extraCode: over.extraCode || null,
       agreement: over.agreement ?? (rnd() > .12),
       channel: rnd() > .25 ? 'SMS' : 'Email',
       flags: over.flags ? [...over.flags] : [],
@@ -81,10 +71,11 @@ const BL = (() => {
   make({ first:'Ethan', last:'Shalauddin', grade:8, programs:['Main','SCSE'], lang:'English',
          phone:'203-570-8219', joined:'2026-06-03', school:'SCSE', agreement:true,
          flags:['duplicate','two-codes'], guardian:'Rahima Shalauddin',
+         code:'BLA-2026-0002', extraCode:'BLA-2026-0003',
          notes:'Submitted the agreement twice — Main 3 Jun 2026, SCSE 6 Jun 2026. Same name, same DOB (05/26/2013), same address. Two different codes were issued. Both submissions were correct; the system created the second identity.' });
 
   make({ first:'Annabella', last:'Rojas', grade:9, programs:['Main','SCSE'], lang:'Spanish',
-         joined:'2024-11-08', flags:['duplicate'], guardian:'Marisol Rojas', agreement:true,
+         joined:'2024-11-08', flags:['duplicate'], guardian:'Marisol Rojas', agreement:true, code:'BLA-2026-0001',
          notes:'Main 8 Nov 2024, SCSE 5 Dec 2024. Waiting on Andy: which record survives the merge.' });
 
   make({ first:'Anthony', last:'Lopez', grade:10, programs:['Main','Starfish'], lang:'Spanish',
@@ -106,16 +97,15 @@ const BL = (() => {
   /* the rest of Main */
   while (families.length < 113) make({ programs:['Main'] });
 
-  /* the codes that exist today: 9 in the workbook, 2 of them our own test rows.
-     Ethan holds two — that is the bug, not a feature. */
-  const seedCodes = [[6,'BLH-2026-0001'],[11,'BLH-2026-0002'],[27,'BLS-2026-0001'],
-                     [30,'BLS-2026-0002'],[46,'BLA-2026-0004'],[58,'BLA-2026-0005']];
-  seedCodes.forEach(([i, code]) => {
-    const f = families[i];
-    if (!f || f.code) return;
-    f.code = code;
-    f.flags = f.flags.filter(x => x !== 'no-code');
-  });
+  /* The rest of the codes that exist in the workbook today. Nine in total:
+     Ethan holds two of them, and two more were our own test rows — already
+     deleted (defect 9), which is why eight families now carry one. */
+  const plain = p => families.filter(f => f.programs[0] === p && !f.code && !f.flags.some(x => x !== 'no-code'));
+  const give = (f, code) => { if (!f) return; f.code = code; f.flags = f.flags.filter(x => x !== 'no-code'); };
+  const [h1, h2] = plain('Horizons'); const [s1, s2] = plain('SCSE'); const [m1, m2] = plain('Main');
+  give(h1, 'BLH-2026-0001'); give(h2, 'BLH-2026-0002');
+  give(s1, 'BLS-2026-0001'); give(s2, 'BLS-2026-0002');
+  give(m1, 'BLA-2026-0004'); give(m2, 'BLA-2026-0005');
 
   /* a handful of deliberate attendance stories for the nudge engine */
   families[7].attendance  = [1,1,1,0,0,0,1,0];
@@ -125,10 +115,13 @@ const BL = (() => {
 
   /* ── derived counts ── */
   const counts = () => {
-    const c = { total: families.length, coded: 0, missing: 0, duplicates: 0, noAgreement: 0, byProgram: {} };
+    const c = { total: families.length, coded: 0, missing: 0, duplicates: 0, noAgreement: 0, codesIssued: 0, starfishUnsigned: 0, byProgram: {} };
     Object.keys(PROGRAMS).forEach(p => c.byProgram[p] = 0);
     families.forEach(f => {
       f.code ? c.coded++ : c.missing++;
+      if (f.code) c.codesIssued++;
+      if (f.extraCode) c.codesIssued++;
+      if (f.programs.includes('Starfish') && (!f.agreement || f.flags.includes('pasted'))) c.starfishUnsigned++;
       if (f.flags.includes('duplicate')) c.duplicates++;
       if (!f.agreement) c.noAgreement++;
       f.programs.forEach(p => c.byProgram[p] !== undefined && c.byProgram[p]++);
@@ -145,7 +138,7 @@ const BL = (() => {
              address:'61 West Glen Drive', phone:'203-570-8219', code:'BLA-2026-0002', program:'Main' },
       right:{ tab:'PA (SCSE)', row:16, submitted:'6 Jun 2026', name:'Shalauddin, Ethan', dob:'05/26/2013',
              address:'61 West Glen Drive', phone:'475-257-8689', code:'BLA-2026-0003', program:'SCSE' },
-      note:'Andy requires a separate agreement per program — two submissions is correct behaviour. Keep both agreements, keep one identity.'
+      note:'Andy requires a separate agreement per program — two submissions is correct behavior. Keep both agreements, keep one identity.'
     },
     {
       id:'m2', confidence:94, status:'open',
@@ -244,7 +237,7 @@ const BL = (() => {
     { n:4, state:'fixed', title:'The Starfish tab is structurally broken', body:'Row 1 headers copied from Main, rows 2–5 pasted families, rows 6–9 blank, row 10 the form’s real header shifted one column across. Restructured before anything else touched it.' },
     { n:5, state:'open',  title:'Starfish appears nowhere in the Master', body:'Those four families are invisible in the summary — and in every count Andy reads off it.' },
     { n:6, state:'fixed', title:'SCSE carries a stray 38th column titled “Column 37”', body:'Ethan Shalauddin’s code was parked outside the real Participant Code field. That is why Andy saw a code and our copy showed the cell empty.' },
-    { n:7, state:'fixed', title:'The script does not recognise Starfish', body:'Missing from the lookup table, matching none of the fallback patterns.' },
+    { n:7, state:'fixed', title:'The script does not recognize Starfish', body:'Missing from the lookup table, matching none of the fallback patterns.' },
     { n:8, state:'fixed', title:'The script guessed where to write codes', body:'If it could not find the Participant Code column it wrote to column 37 anyway. Guessing where a child’s identifier goes is how codes end up on the wrong family. Removed in v2.' },
     { n:9, state:'fixed', title:'A test row is showing inside Andy’s Master view', body:'Ours. Deleted, along with the three empty leftover tabs.' },
     { n:'★', state:'risk', title:'The workbook and the script sit on a personal account', body:'Every name, birthday, address, phone, income and ethnicity — plus the code generator — live on a personal Gmail, running on RJ’s login. Transferring ownership does not carry the triggers over; they must be recreated afterwards or code generation silently stops.' }
@@ -267,6 +260,22 @@ const BL = (() => {
     'Do the four Starfish families need to sign a real Starfish agreement?',
     'Can we get ParentSquare’s import format before we shape the data to it?'
   ];
+
+  /* keep the demo copy honest: anything that quotes a number reads it off the data */
+  const c0 = counts();
+  const scseUnsigned = families.filter(f => f.programs.includes('SCSE') && !f.agreement).length;
+  posts[0].audience = `All families · ${c0.total}`;
+  posts[0].sent = c0.total; posts[0].delivered = c0.total - 2; posts[0].read = Math.round(c0.total * .85);
+  posts[1].audience = `Horizons · ${c0.byProgram.Horizons}`;
+  posts[1].sent = posts[1].delivered = c0.byProgram.Horizons; posts[1].read = c0.byProgram.Horizons - 2;
+  posts[3].audience = `SCSE · ${c0.byProgram.SCSE}`;
+  posts[3].sent = posts[3].delivered = c0.byProgram.SCSE;
+  posts[3].read = Math.max(1, c0.byProgram.SCSE - 5);
+  posts[3].body = `${scseUnsigned} SCSE families still owe a signed agreement. The link below takes two minutes on a phone.`;
+
+  const firstUncoded = families.find(f => !f.code && !f.flags.some(x => x !== 'no-code')) || families[0];
+  activity[0].t = `<b>BL-2026-${String(c0.coded + 1).padStart(4, '0')}</b> is the next number in line — for <b>${firstUncoded.name}</b>, under the new single series`;
+  activity[4].t = `<b>${scseUnsigned} SCSE families</b> still owe a participation agreement`;
 
   return { PROGRAMS, families, counts, matches, posts, rules, script, botFlow, mapping, defects, activity, openQuestions };
 })();

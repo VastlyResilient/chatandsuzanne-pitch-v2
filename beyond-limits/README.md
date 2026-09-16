@@ -8,7 +8,7 @@ ParentSquare assumes a school district: a student information system, school-ass
 student IDs, a roster that someone else maintains. Beyond Limits has none of that. It has
 113 families across four programs, a Google Forms workbook, and a deadline it did not
 choose — Remind is being folded into ParentSquare. Connect is the same job, done for the
-organisation that has to do it.
+organization that has to do it.
 
 ## Open it
 
