@@ -65,6 +65,25 @@ icon included:
 > Gatekeeper asks the first time). To ship it to others without that prompt
 > you'd sign & notarize it with an Apple Developer ID — ask me and I'll add that.
 
+### Or download a cloud-built app (no Python needed)
+
+A GitHub Actions workflow builds `JEV.app` (and `JEV.exe`) on real macOS/Windows
+runners:
+
+1. On GitHub, open the repo's **Actions** tab → **Build JEV app** → **Run workflow**.
+   (Or push a tag like `v0.1.0`.)
+2. When it finishes, download the **JEV-macOS** artifact and unzip it.
+3. Move `JEV.app` to **Applications**, then clear the "downloaded from the
+   internet" quarantine so it opens cleanly:
+
+   ```bash
+   xattr -cr /Applications/JEV.app
+   open /Applications/JEV.app
+   ```
+
+macOS runner minutes are billed at 10× on private repos, so this workflow only
+runs on demand or on a tag — never on every push.
+
 ## Or just run it (no build step)
 
 1. Get a Jev API key from the [TypeSafe dashboard](https://console.typesafe.ai/keys).

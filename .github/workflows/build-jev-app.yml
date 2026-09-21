@@ -1,0 +1,58 @@
+name: Build JEV app
+
+# Builds the JEV desktop app on real macOS (and Windows) runners and uploads
+# the result you can download. Runs on demand (Actions tab -> Run workflow) or
+# when you push a tag like v0.1.0. It does NOT run on every push, to avoid
+# spending Actions minutes unexpectedly (macOS minutes are billed at 10x).
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+defaults:
+  run:
+    working-directory: jevfind
+
+jobs:
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller -r requirements.txt
+      - name: Build JEV.app
+        run: pyinstaller --noconfirm JEV.spec
+      - name: Zip the app (preserves macOS metadata)
+        run: ditto -c -k --keepParent dist/JEV.app JEV-macOS.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JEV-macOS
+          path: jevfind/JEV-macOS.zip
+          if-no-files-found: error
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install build deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyinstaller -r requirements.txt
+      - name: Build JEV.exe
+        run: pyinstaller --noconfirm JEV.spec
+      - name: Zip the app
+        run: Compress-Archive -Path dist/JEV/* -DestinationPath JEV-Windows.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: JEV-Windows
+          path: jevfind/JEV-Windows.zip
+          if-no-files-found: error
