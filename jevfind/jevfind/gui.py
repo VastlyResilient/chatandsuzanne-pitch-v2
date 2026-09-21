@@ -28,13 +28,24 @@ def run_gui() -> int:
         print("  python -m jevfind search \"...\"")
         return 1
 
+    from .resources import icon_png
+
     cfg = load_config()
     ui_queue: "queue.Queue[tuple]" = queue.Queue()
 
     root = tk.Tk()
-    root.title("JevFind — describe a file, find it")
+    root.title("JEV — describe a file, find it")
     root.geometry("880x620")
     root.minsize(720, 480)
+
+    # App icon in the title bar / dock (best effort; PNG needs Tk 8.6+).
+    try:
+        _ico = icon_png()
+        if _ico:
+            root._jev_icon = tk.PhotoImage(file=_ico)  # keep a reference
+            root.iconphoto(True, root._jev_icon)
+    except Exception:
+        pass
 
     results: list[Result] = []
 

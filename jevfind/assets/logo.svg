@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- App background: deep indigo liquid gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4b6bff"/>
+      <stop offset="0.55" stop-color="#3246d6"/>
+      <stop offset="1" stop-color="#1b1f6b"/>
+    </linearGradient>
+    <radialGradient id="bgGlow" cx="0.3" cy="0.22" r="0.9">
+      <stop offset="0" stop-color="#8fa6ff" stop-opacity="0.55"/>
+      <stop offset="0.5" stop-color="#8fa6ff" stop-opacity="0.0"/>
+    </radialGradient>
+
+    <!-- Glass of the lens -->
+    <radialGradient id="glass" cx="0.38" cy="0.32" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.42"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#dfe8ff" stop-opacity="0.10"/>
+    </radialGradient>
+    <!-- Thin bright rim, brighter at the top-left -->
+    <linearGradient id="rim" x1="0.15" y1="0.05" x2="0.85" y2="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.75"/>
+    </linearGradient>
+    <!-- Specular highlight blob -->
+    <radialGradient id="spec" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Document page -->
+    <linearGradient id="page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.98"/>
+      <stop offset="1" stop-color="#eef2ff" stop-opacity="0.92"/>
+    </linearGradient>
+    <!-- Glass handle -->
+    <linearGradient id="handle" gradientUnits="userSpaceOnUse"
+        x1="612" y1="596" x2="812" y2="806">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="0.5" stop-color="#d7e0ff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#aebdff" stop-opacity="0.75"/>
+    </linearGradient>
+
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="22" flood-color="#0a0e3a" flood-opacity="0.35"/>
+    </filter>
+    <filter id="blurSm" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+
+    <clipPath id="lensClip"><circle cx="440" cy="430" r="238"/></clipPath>
+  </defs>
+
+  <!-- Rounded-square app tile -->
+  <rect x="0" y="0" width="1024" height="1024" rx="232" ry="232" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1024" height="1024" rx="232" ry="232" fill="url(#bgGlow)"/>
+  <!-- faint top sheen on the tile -->
+  <path d="M0 232 Q0 0 232 0 H792 Q1024 0 1024 232 V300 Q512 180 0 300 Z" fill="#ffffff" opacity="0.06"/>
+
+  <!-- Handle (drawn first so the lens overlaps it) -->
+  <g filter="url(#softShadow)">
+    <line x1="612" y1="596" x2="806" y2="790" stroke="url(#handle)" stroke-width="86" stroke-linecap="round"/>
+    <line x1="612" y1="596" x2="806" y2="790" stroke="#ffffff" stroke-opacity="0.55" stroke-width="20" stroke-linecap="round" transform="translate(-14,-14)"/>
+  </g>
+
+  <!-- Lens group -->
+  <g filter="url(#softShadow)">
+    <!-- glass body -->
+    <circle cx="440" cy="430" r="238" fill="url(#glass)"/>
+
+    <!-- document with thin PDF text lines, clipped to the lens -->
+    <g clip-path="url(#lensClip)">
+      <g transform="translate(0,4)">
+        <!-- page -->
+        <path d="M356 300 h132 l40 40 v244 a14 14 0 0 1 -14 14 H356 a14 14 0 0 1 -14 -14 V314 a14 14 0 0 1 14 -14 Z"
+              fill="url(#page)"/>
+        <!-- folded corner -->
+        <path d="M488 300 l40 40 h-40 Z" fill="#cdd8ff" opacity="0.95"/>
+        <!-- PDF text lines (thin) -->
+        <g stroke-linecap="round">
+          <line x1="372" y1="356" x2="470" y2="356" stroke="#ff453a" stroke-width="12"/>
+          <line x1="372" y1="392" x2="512" y2="392" stroke="#9aa6c8" stroke-width="10"/>
+          <line x1="372" y1="424" x2="512" y2="424" stroke="#9aa6c8" stroke-width="10"/>
+          <line x1="372" y1="456" x2="512" y2="456" stroke="#9aa6c8" stroke-width="10"/>
+          <line x1="372" y1="488" x2="486" y2="488" stroke="#9aa6c8" stroke-width="10"/>
+          <line x1="372" y1="520" x2="512" y2="520" stroke="#c3cbe4" stroke-width="10"/>
+          <line x1="372" y1="552" x2="452" y2="552" stroke="#c3cbe4" stroke-width="10"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- specular highlight -->
+    <ellipse cx="356" cy="318" rx="120" ry="78" fill="url(#spec)" opacity="0.85" filter="url(#blurSm)" transform="rotate(-28 356 318)"/>
+    <!-- thin glass rim -->
+    <circle cx="440" cy="430" r="238" fill="none" stroke="url(#rim)" stroke-width="12"/>
+    <circle cx="440" cy="430" r="224" fill="none" stroke="#ffffff" stroke-opacity="0.22" stroke-width="3"/>
+  </g>
+</svg>

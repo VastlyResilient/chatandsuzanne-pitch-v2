@@ -1,6 +1,12 @@
-# JevFind
+<p align="center">
+  <img src="assets/icon_256.png" width="140" alt="JEV app icon"/>
+</p>
+
+# JEV
 
 **Describe a file in plain English — find it on your Mac or Windows PC, even if you don't know its name.**
+
+*(Package name is `jevfind`; the app is branded **JEV**.)*
 
 You know the file exists. You just remember *what it's about* — "that PDF with the
 sourdough recipe," "the letter about the roof warranty," "my Q3 budget with the
@@ -40,20 +46,44 @@ Your description ──▶ [2] Lexical pre-filter (local, no AI) ──▶ top c
 
 ---
 
-## Install & run (easiest)
+## Make it a real app (JEV.app / JEV.exe)
 
-1. Install [Python 3.10+](https://www.python.org/downloads/) if you don't have it.
-2. Get a Jev API key from the [TypeSafe dashboard](https://console.typesafe.ai/keys).
-3. Download this `jevfind/` folder.
-4. **Mac:** double-click `run_mac.command`.
-   **Windows:** double-click `run_windows.bat`.
-   (First launch sets everything up automatically and opens the window.)
-5. Click **Add folder…**, pick where your files live, click **Update index**, then
-   type a description and hit **Search**. Double-click a result to reveal it.
+Because a macOS `.app` can only be built on a Mac and a Windows `.exe` only on
+Windows, you build the app once on your own machine — one double-click, custom
+icon included:
+
+1. Install [Python 3.10+](https://www.python.org/downloads/).
+2. Download this `jevfind/` folder.
+3. **Mac:** double-click **`Build JEV on Mac.command`** → produces **`dist/JEV.app`**.
+   Drag it into your **Applications** folder.
+   **Windows:** double-click **`Build JEV on Windows.bat`** → produces
+   **`dist/JEV/JEV.exe`**. Right-click → *Send to → Desktop* for a shortcut.
+4. Launch **JEV**, click **Add folder…**, **Update index**, then describe a file
+   and hit **Search**.
+
+> First launch on macOS: right-click **JEV.app → Open** once (it's unsigned, so
+> Gatekeeper asks the first time). To ship it to others without that prompt
+> you'd sign & notarize it with an Apple Developer ID — ask me and I'll add that.
+
+## Or just run it (no build step)
+
+1. Get a Jev API key from the [TypeSafe dashboard](https://console.typesafe.ai/keys).
+2. **Mac:** double-click `run_mac.command`. **Windows:** double-click `run_windows.bat`.
+   (First launch sets things up and opens the window.)
+3. **Add folder…**, **Update index**, then search.
 
 You'll be asked for your API key once; it's stored in `~/.jevfind/config.json`
 (readable only by you) — **never inside this project folder**, so it can't be
 committed to git.
+
+### Rebuild / customize the icon
+
+The icon is `assets/logo.svg`. Regenerate every format after editing it with:
+
+```bash
+pip install cairosvg Pillow
+python assets/build_icons.py     # writes JEV.icns, JEV.ico, icon*.png
+```
 
 ---
 

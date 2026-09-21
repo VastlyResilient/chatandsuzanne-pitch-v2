@@ -8,3 +8,9 @@ __pycache__/
 config.json
 *.db
 .env
+
+# App build artifacts
+build/
+dist/
+.buildenv/
+*.spec.bak

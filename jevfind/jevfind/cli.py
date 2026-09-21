@@ -134,7 +134,7 @@ def cmd_search(args) -> int:
 def cmd_status(_args) -> int:
     cfg = load_config()
     st = index_stats()
-    print(f"JevFind {__version__}")
+    print(f"JEV {__version__}")
     print("API key:", "set" if get_api_key(cfg) else "NOT set (run 'jevfind setup')")
     print("Model:", cfg.get("model"))
     print("Folders:", cfg["roots"] or "(none)")
@@ -148,7 +148,9 @@ def cmd_gui(_args) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="jevfind", description="Find files by describing them.")
+    p = argparse.ArgumentParser(
+        prog="jevfind", description="JEV — find files by describing them, powered by Jev."
+    )
     p.add_argument("--version", action="version", version=f"jevfind {__version__}")
     sub = p.add_subparsers(dest="command")
 
