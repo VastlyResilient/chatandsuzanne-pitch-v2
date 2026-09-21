@@ -1,0 +1,10 @@
+# Never commit local environments, indexes, or secrets.
+.venv/
+__pycache__/
+*.pyc
+
+# The API key / index live in ~/.jevfind, but ignore any local copies too.
+.jevfind/
+config.json
+*.db
+.env

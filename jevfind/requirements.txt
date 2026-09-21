@@ -1,0 +1,10 @@
+# JevFind optional dependencies.
+# The core (search, Jev API calls, plain-text/HTML files, the desktop window)
+# runs on the Python standard library alone. Install these only to also read
+# the matching rich file types:
+
+pypdf>=4.0          # .pdf
+python-docx>=1.1    # .docx
+openpyxl>=3.1       # .xlsx
+python-pptx>=0.6    # .pptx
+striprtf>=0.0.26    # .rtf (optional; a basic fallback works without it)
