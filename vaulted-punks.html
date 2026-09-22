@@ -29,16 +29,17 @@
 
   .stage{display:flex;align-items:center;justify-content:center;gap:clamp(4px,2vw,26px);margin-top:14px;width:100%;}
   .nav{
-    flex:0 0 auto;width:clamp(40px,7vw,54px);height:clamp(40px,7vw,54px);border-radius:50%;
+    flex:0 0 auto;width:clamp(40px,10vw,52px);height:clamp(40px,10vw,52px);border-radius:50%;
     border:1px solid var(--line);background:linear-gradient(180deg,#1c1c22,#141418);color:var(--ink);
     font-size:clamp(20px,4vw,26px);line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
     transition:transform .15s,border-color .2s;user-select:none;-webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
   }
   .nav:hover{border-color:var(--accent);transform:translateY(-1px);}
   .nav:active{transform:scale(.94);}
 
-  .scene{flex:0 0 auto;width:clamp(250px,46vw,440px);aspect-ratio:1/1;perspective:1100px;cursor:pointer;
-    -webkit-tap-highlight-color:transparent;position:relative;}
+  .scene{flex:0 0 auto;width:clamp(200px,58vw,440px);aspect-ratio:1/1;perspective:1100px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;position:relative;touch-action:none;}
   .tilt{width:100%;height:100%;transform-style:preserve-3d;transition:transform .28s cubic-bezier(.22,.61,.36,1);}
   .lift{width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s cubic-bezier(.34,1.56,.64,1);}
   .idle{width:100%;height:100%;}
@@ -81,13 +82,15 @@
   .thumbs{display:flex;gap:10px;margin-top:26px;flex-wrap:wrap;justify-content:center;max-width:560px;}
   .thumb{width:clamp(52px,12vw,66px);aspect-ratio:1/1;border-radius:13px;overflow:hidden;border:2px solid transparent;
     background:#f7943a;cursor:pointer;padding:0;transition:transform .15s,border-color .2s,box-shadow .2s;opacity:.72;
-    -webkit-tap-highlight-color:transparent;}
+    -webkit-tap-highlight-color:transparent;touch-action:manipulation;}
   .thumb img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;}
   .thumb:hover{transform:translateY(-2px);opacity:1;}
   .thumb.active{border-color:var(--accent);opacity:1;box-shadow:0 6px 18px -8px rgba(255,138,43,.8);}
 
-  .foot{margin-top:24px;font-size:12px;color:#5f5d57;text-align:center;line-height:1.6;}
+  .foot{margin-top:24px;font-size:12px;color:#5f5d57;text-align:center;line-height:1.7;}
   kbd{font-family:inherit;background:#1b1b21;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:11px;color:var(--muted);}
+  .kbdline{display:block;}
+  @media (pointer:coarse){ .kbdline{display:none;} }
 
   @media (prefers-reduced-motion: reduce){
     .scene.awake .idle{animation:none;}
@@ -99,7 +102,7 @@
 <body>
   <header>
     <h1>Vaulted Punks<span class="dot">.</span></h1>
-    <p class="tag"><b>Click a punk to wake it.</b> It springs up, holds an alert stance, and its own eyes follow your cursor. Click again to send it back to sleep.</p>
+    <p class="tag"><b>Tap a punk to wake it.</b> It springs up, holds an alert stance, and its own eyes follow your finger or cursor. Tap again to send it back to sleep.</p>
   </header>
 
   <div class="stage">
@@ -119,14 +122,14 @@
 
   <div class="meta">
     <div class="name" id="name">#0000<small id="desc"></small></div>
-    <div class="state" id="state">Asleep</div>
+    <div class="state" id="state" aria-live="polite">Asleep</div>
   </div>
 
   <div class="thumbs" id="thumbs"></div>
 
   <p class="foot">
-    <kbd>←</kbd> <kbd>→</kbd> switch punk &nbsp;·&nbsp; <kbd>space</kbd> / click to wake &amp; sleep<br>
-    Same art, same eyes — now awake.
+    Tap to wake &nbsp;·&nbsp; drag to lead its eyes &nbsp;·&nbsp; tap again to sleep<br>
+    <span class="kbdline"><kbd>←</kbd> <kbd>→</kbd> switch punk &nbsp;·&nbsp; <kbd>space</kbd> wake &amp; sleep &nbsp;·&nbsp; </span>Same art, same eyes — now awake.
   </p>
 
 <script>
@@ -139,10 +142,13 @@ const scene=document.getElementById('scene'), tilt=document.getElementById('tilt
       nameEl=document.getElementById('name'), descEl=document.getElementById('desc'),
       stateEl=document.getElementById('state'), thumbsEl=document.getElementById('thumbs');
 const eyeEls=[eL,eR];
-let idx=0, travelPx=6;
+let idx=0, travelPx=6, lastInput=0;
 const MAX_RY=8, MAX_RX=5;
+const coarse=matchMedia('(pointer:coarse)').matches;
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const awake=()=>scene.classList.contains('awake');
+function setEye(el,tx,ty){el.style.setProperty('--tx',tx.toFixed(1)+'px');el.style.setProperty('--ty',ty.toFixed(1)+'px');}
 
 function applyChar(i){
   idx=(i+CHARS.length)%CHARS.length;
@@ -170,10 +176,11 @@ function setAwake(on){
 const toggle=()=>setAwake(!awake());
 function reset(){
   tilt.style.transform='rotateX(0deg) rotateY(0deg)';
-  eyeEls.forEach(el=>{el.style.setProperty('--tx','0px');el.style.setProperty('--ty','0px');});
+  eyeEls.forEach(el=>setEye(el,0,0));
 }
 function track(mx,my){
   if(!awake()) return;
+  lastInput=performance.now();
   const r=scene.getBoundingClientRect();
   const nx=Math.max(-1,Math.min(1,(mx-(r.left+r.width/2))/(r.width/2)));
   const ny=Math.max(-1,Math.min(1,(my-(r.top+r.height/2))/(r.height/2)));
@@ -183,10 +190,19 @@ function track(mx,my){
     let tx=(mx-(p.left+p.width/2))*0.10, ty=(my-(p.top+p.height/2))*0.10;
     const d=Math.hypot(tx,ty);
     if(d>travelPx){const s=travelPx/d;tx*=s;ty*=s;}
-    el.style.setProperty('--tx',tx.toFixed(1)+'px');
-    el.style.setProperty('--ty',ty.toFixed(1)+'px');
+    setEye(el,tx,ty);
   });
 }
+/* idle "looking around" gaze — keeps it alive on touch screens with no cursor */
+function idleLoop(t){
+  if(awake() && !reduceMotion && performance.now()-lastInput>1300){
+    const s=t/1000, fx=Math.sin(s*0.8)*Math.cos(s*0.27), fy=Math.sin(s*0.55+0.7);
+    eyeEls.forEach(el=>setEye(el, fx*travelPx*0.85, fy*travelPx*0.5));
+    tilt.style.transform='rotateY('+(fx*MAX_RY*0.5).toFixed(2)+'deg) rotateX('+(-fy*MAX_RX*0.4).toFixed(2)+'deg)';
+  }
+  requestAnimationFrame(idleLoop);
+}
+requestAnimationFrame(idleLoop);
 
 CHARS.forEach((c,i)=>{
   const b=document.createElement('button');b.className='thumb';b.type='button';b.title='#'+c.id;
@@ -196,8 +212,19 @@ CHARS.forEach((c,i)=>{
   thumbsEl.appendChild(b);
 });
 
-scene.addEventListener('click',toggle);
+/* unified pointer input: tap (small move) toggles wake/sleep; drag leads the eyes */
+let downX=0,downY=0,activeId=null,dragged=false;
+scene.addEventListener('pointerdown',e=>{
+  activeId=e.pointerId; downX=e.clientX; downY=e.clientY; dragged=false; lastInput=performance.now();
+});
+scene.addEventListener('pointermove',e=>{
+  if(activeId===e.pointerId && Math.hypot(e.clientX-downX,e.clientY-downY)>10) dragged=true;
+});
+scene.addEventListener('pointerup',()=>{activeId=null;});
+scene.addEventListener('pointercancel',()=>{activeId=null;dragged=false;});
+scene.addEventListener('click',()=>{ if(dragged){dragged=false;return;} toggle(); });
 scene.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
+
 document.getElementById('prev').addEventListener('click',()=>applyChar(idx-1));
 document.getElementById('next').addEventListener('click',()=>applyChar(idx+1));
 document.addEventListener('keydown',e=>{
@@ -205,7 +232,8 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='ArrowRight')applyChar(idx+1);
   else if(e.key===' '&&e.target===document.body){e.preventDefault();toggle();}
 });
-window.addEventListener('mousemove',e=>track(e.clientX,e.clientY));
+/* pointermove covers mouse, touch (while pressed) and pen */
+window.addEventListener('pointermove',e=>track(e.clientX,e.clientY),{passive:true});
 window.addEventListener('mouseleave',reset);
 window.addEventListener('resize',layout);
 applyChar(0);
