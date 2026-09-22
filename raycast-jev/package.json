@@ -1,0 +1,68 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "jev",
+  "title": "JEV",
+  "description": "Describe a file, folder, or email in plain English and JEV finds it — instant Spotlight-speed results, semantically ranked by Jev (TypeSafe System One).",
+  "icon": "extension-icon.png",
+  "author": "bobby",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "find-file",
+      "title": "Find File or Folder",
+      "subtitle": "JEV",
+      "description": "Describe a file or folder and JEV finds and opens it.",
+      "mode": "view"
+    },
+    {
+      "name": "find-email",
+      "title": "Find Email",
+      "subtitle": "JEV",
+      "description": "Describe an email and JEV finds it in your Gmail.",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "jevApiKey",
+      "title": "Jev API Key",
+      "description": "Your TypeSafe Jev API key. Stored securely in the macOS Keychain by Raycast.",
+      "type": "password",
+      "required": true
+    },
+    {
+      "name": "searchPaths",
+      "title": "Folders to Search",
+      "description": "Optional comma-separated folders to limit file search to. Leave blank to search your whole home folder.",
+      "type": "textfield",
+      "required": false,
+      "default": ""
+    },
+    {
+      "name": "googleClientId",
+      "title": "Google OAuth Client ID",
+      "description": "Only needed for Find Email. Create a Desktop OAuth client in Google Cloud (see README) and paste its Client ID here.",
+      "type": "textfield",
+      "required": false,
+      "default": ""
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.83.0",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^1.0.11",
+    "@types/node": "22.19.17",
+    "@types/react": "19.0.10",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.4.0"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "lint": "ray lint",
+    "fix-lint": "ray lint --fix"
+  }
+}
