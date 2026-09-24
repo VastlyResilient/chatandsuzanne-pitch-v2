@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Absolute Advisor — Komal's fleet &amp; profit strategist</title>
+<meta name="description" content="Absolute Advisor: a private fleet, pricing and profit strategist for Absolute Transportation, grounded in Komal's live roster with live web search.">
+<meta name="theme-color" content="#0a0d12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Advisor">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='17' r='17' fill='%239C86CE'/%3E%3Ccircle cx='17' cy='17' r='8.6' fill='%23fff'/%3E%3Ccircle cx='17' cy='17' r='3.7' fill='%23151519'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add('anim')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=block" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+button,input,textarea{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+
+:root{
+  --u:min(0.06410256vw,0.12400794vh);
+  --vu:0.09920635vh;
+  --inset-top:41;--inset-bottom:106;
+  --font-text:Inter,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --font-display:Inter,var(--font-text);
+
+  --brand-x:225;--brand-y:45;--mark:34;--brand-gap:12;--brand-fs:18.49;
+  --links-y:50.5;--links-gap:50;--links-fs:21.69;
+  --cta-x:1195;--cta-y:42;--cta-w:140;--cta-h:43;--cta-r:12;--cta-fs:15.70;--cta-dy:2;
+
+  --hero-gap:51;
+  --h1-y:323;--h1-fs:36.25;--display-ls:0.0018em;
+  --nav-ls:-0.0115em;--brand-ls:-0.0154em;--cta-ls:-0.0127em;--body-ls:0.007em;
+  --label-ls:normal;--model-ls:normal;--proof-ls:0.0065em;
+  --w-regular:400;--w-display-wght:410;--w-medium:500;--w-semibold:600;
+  --w-display:var(--w-display-wght);--w-nav:400;--w-brand:500;--w-cta:520;
+  --w-body:var(--w-regular);--w-label:var(--w-medium);
+  --w-model:var(--w-regular);--w-proof:480;
+
+  --card-x:425;--card-y:413;--card-w:708;--card-h:143;--card-r:26;
+  --ph-x:452;--ph-y:446;--ph-fs:9.97;
+  --chips-x:444;--chips-y:505;--chip-h:30;--chip-r:9;--chip-fs:9.0;--chip-gap:5.5;
+  --son-fs:10.4;--son-top:15.5;--chev-gap:6.2;
+  --chev-x:1013.5;--chev-y:522.3;
+  --att-x:1043.2;--att-y:515.1;
+  --send-x:1084;--send-y:507;--send-d:35;
+
+  --by-y:799;--by-fs:14.01;--logo-y:867;--logo-gap:62;
+
+  --e-primary:cubic-bezier(.16,1,.3,1);
+  --e-soft:cubic-bezier(.22,1,.36,1);
+}
+@supports (height:100dvh){
+  :root{--u:min(0.06410256vw,0.12400794dvh);--vu:0.09920635dvh}
+}
+@media (min-width:1561px){:root{--inset-top:27;--inset-bottom:74}}
+
+html,body{height:100%}
+body{
+  overflow:hidden;background:#0a0d12;color:#fff;
+  font-family:var(--font-text);font-weight:var(--w-regular);
+  font-synthesis:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:geometricPrecision;
+}
+:focus-visible{outline:2px solid #F8B285;outline-offset:3px;border-radius:4px}
+
+.stage{position:fixed;inset:0;overflow:hidden;background:#0a0d12}
+.stage-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.frame{
+  position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
+  padding:calc(var(--inset-top)*var(--vu)) calc(225*var(--u)) calc(var(--inset-bottom)*var(--vu));
+}
+#menu{position:absolute;opacity:0;pointer-events:none}
+
+/* ---------------------------------------------------------------- nav */
+.nav{position:relative;height:calc(43*var(--u));display:flex;align-items:center;justify-content:space-between;flex:none}
+.brand{
+  display:flex;align-items:center;gap:calc(var(--brand-gap)*var(--u));
+  font-family:var(--font-display);font-variation-settings:"opsz" 32;
+  font-size:calc(var(--brand-fs)*var(--u));font-weight:var(--w-brand);letter-spacing:var(--brand-ls);
+  text-shadow:0 calc(1*var(--u)) calc(10*var(--u)) rgba(0,0,0,.30);
+}
+.brand .mark{width:calc(var(--mark)*var(--u));height:calc(var(--mark)*var(--u));flex:none}
+.brand .word{transform:translateY(calc(1*var(--u)))}
+.links{
+  position:absolute;left:50%;transform:translateX(-50%);
+  top:calc((var(--links-y) - 41)*var(--u));
+  display:flex;gap:calc(var(--links-gap)*var(--u));
+}
+.links a{
+  font-family:var(--font-text);font-size:calc(var(--links-fs)*var(--u));font-weight:var(--w-nav);
+  letter-spacing:var(--nav-ls);line-height:1.2;color:#fff;
+  text-shadow:0 calc(1*var(--u)) calc(12*var(--u)) rgba(0,0,0,.32);
+  transition:opacity .18s ease;
+}
+.links a:hover{opacity:.72}
+.cta{
+  width:calc(var(--cta-w)*var(--u));height:calc(var(--cta-h)*var(--u));border-radius:calc(var(--cta-r)*var(--u));
+  align-self:flex-start;margin-top:calc((var(--cta-y) - 41)*var(--u));
+  display:flex;align-items:center;justify-content:center;
+  font-size:calc(var(--cta-fs)*var(--u));font-weight:var(--w-cta);letter-spacing:var(--cta-ls);
+  background:linear-gradient(180deg,#3d3d3f 0%,#1d1d20 100%);
+  box-shadow:inset 0 calc(1*var(--u)) 0 rgba(255,255,255,.10),0 calc(2*var(--u)) calc(14*var(--u)) rgba(0,0,0,.28);
+  transition:filter .18s ease;
+}
+.cta span{transform:translateY(calc(var(--cta-dy)*var(--u)))}
+.cta:hover{filter:brightness(1.16)}
+.cta:active{transform:translateY(1px)}
+.burger,.sheet{display:none}
+
+/* ---------------------------------------------------------------- hero */
+.hero{
+  flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:calc(var(--hero-gap)*var(--vu));padding-bottom:calc(4*var(--vu));
+}
+.head{display:flex;flex-direction:column;align-items:center;gap:calc(14*var(--u));text-align:center;flex:none}
+.h1{
+  font-family:var(--font-display);font-variation-settings:"opsz" 32;
+  font-size:calc(var(--h1-fs)*var(--u));font-weight:var(--w-display);line-height:1.10;letter-spacing:var(--display-ls);
+  color:#fff;text-shadow:0 calc(2*var(--u)) calc(22*var(--u)) rgba(0,0,0,.30);
+}
+.affirm{
+  max-width:calc(660*var(--u));min-height:2.7em;
+  font-size:max(12px,calc(14.5*var(--u)));font-weight:var(--w-regular);line-height:1.35;letter-spacing:var(--body-ls);
+  color:rgba(255,255,255,.86);text-shadow:0 1px 12px rgba(0,0,0,.45);text-wrap:balance;
+  transition:opacity .9s ease,transform .9s var(--e-soft);
+}
+.affirm.out{opacity:0;transform:translateY(4px)}
+
+/* ---------------------------------------------------------------- composer */
+.card{
+  position:relative;flex:none;
+  width:calc(var(--card-w)*var(--u));height:calc(var(--card-h)*var(--u));
+  border-radius:calc(var(--card-r)*var(--u));margin-right:calc(3*var(--u));
+  background:rgba(41,41,43,.955);
+  -webkit-backdrop-filter:blur(calc(26*var(--u))) saturate(112%);backdrop-filter:blur(calc(26*var(--u))) saturate(112%);
+  box-shadow:inset 0 0 0 1px rgba(214,228,255,.14),0 calc(22*var(--u)) calc(60*var(--u)) rgba(0,0,0,.30);
+}
+.ph{
+  position:absolute;left:calc((var(--ph-x) - var(--card-x))*var(--u));top:calc((var(--ph-y) - var(--card-y))*var(--u));
+  right:calc(24*var(--u));height:calc(50*var(--u));
+  color:#e6e6e8;font-size:calc(var(--ph-fs)*var(--u));font-weight:var(--w-body);line-height:1.35;letter-spacing:var(--body-ls);
+  resize:none;outline:none;overflow-y:auto;scrollbar-width:thin;caret-color:#F49D70;
+}
+.ph:not(:placeholder-shown){font-size:max(12.5px,calc(11.5*var(--u)))}
+.ph::placeholder{color:#8B8C8E;opacity:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ph:focus-visible{outline:none}
+
+.tools{
+  position:absolute;
+  left:calc((var(--chips-x) - var(--card-x))*var(--u));
+  top:calc((var(--chips-y) - var(--card-y))*var(--u));
+  right:calc((var(--card-x) + var(--card-w) - 1134)*var(--u));
+  height:calc(var(--chip-h)*var(--u));
+}
+.chips{display:flex;align-items:center;gap:calc(var(--chip-gap)*var(--u));height:100%}
+.chip{
+  width:calc(var(--cw)*var(--u));height:calc(var(--chip-h)*var(--u));padding-left:calc(var(--pl)*var(--u));
+  display:flex;align-items:center;gap:calc(var(--ig)*var(--u));flex:none;
+  border-radius:calc(var(--chip-r)*var(--u));
+  font-size:calc(var(--chip-fs)*var(--u));font-weight:var(--w-label);letter-spacing:var(--label-ls);color:#909093;line-height:1;white-space:nowrap;
+  background:linear-gradient(180deg,rgba(255,255,255,.088) 0%,rgba(255,255,255,.050) 45%,rgba(255,255,255,.038) 100%);
+  border:1px solid rgba(255,255,255,.05);
+  transition:color .18s ease,background .18s ease;
+}
+.chip svg{width:calc(var(--iw)*var(--u));height:auto;flex:none}
+.chip span{transform:translateY(calc(2*var(--u)))}
+.chip:hover{background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.07));color:#c8c8cb}
+
+.right{position:absolute;inset:0;pointer-events:none}
+.right>*{position:absolute;pointer-events:auto}
+.model{
+  left:calc((955 - var(--chips-x) - 0.8)*var(--u));top:calc(var(--son-top)*var(--u));
+  display:inline-flex;align-items:center;gap:calc(var(--chev-gap)*var(--u));
+  font-size:calc(var(--son-fs)*var(--u));font-weight:var(--w-model);letter-spacing:var(--model-ls);color:#98999C;line-height:1;white-space:nowrap;
+  transition:color .18s ease;
+}
+.model svg{width:calc(6.8*var(--u));height:auto}
+.model:hover{color:#c8c8cb}
+.model[data-on="false"]{color:#76777a}
+.attach{
+  left:calc((1043.15 - var(--chips-x))*var(--u));top:calc((515.14 - var(--chips-y))*var(--u));
+  color:#A9AAAD;transition:color .18s ease;
+}
+.attach svg{width:calc(19.79*var(--u));height:auto}
+.attach:hover{color:#fff}
+.send{
+  left:calc((var(--send-x) - var(--chips-x))*var(--u));top:calc((var(--send-y) - var(--chips-y))*var(--u));
+  width:calc(var(--send-d)*var(--u));height:calc(var(--send-d)*var(--u));border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(163deg,#FBBC94 0%,#F49D70 46%,#E88654 100%);
+  box-shadow:0 calc(3*var(--u)) calc(12*var(--u)) rgba(210,110,60,.34);
+  transition:filter .18s ease,transform .18s ease;
+}
+.send svg{width:calc(11.66*var(--u));height:auto}
+.send .stop{display:none}
+.busy .send .up{display:none}
+.busy .send .stop{display:block}
+.send:hover{filter:brightness(1.07)}
+.send:active{transform:scale(.95)}
+
+.attachments{display:none;flex-wrap:wrap;gap:6px;justify-content:center;width:calc(var(--card-w)*var(--u));margin-bottom:calc(-38*var(--vu))}
+.attachments.has{display:flex}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;max-width:260px;padding:5px 6px 5px 10px;border-radius:999px;
+  background:rgba(24,24,27,.78);border:1px solid rgba(255,255,255,.10);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  font-size:12px;color:#d6d6d9;
+}
+.pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill button{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.10);font-size:12px;line-height:18px;color:#bbb}
+.pill button:hover{background:rgba(255,255,255,.2);color:#fff}
+
+/* ---------------------------------------------------------------- footer */
+.proof{flex:none;display:flex;flex-direction:column;align-items:center;gap:calc(52.3*var(--vu))}
+.proof p{
+  font-family:var(--font-display);font-variation-settings:"opsz" 32;
+  font-size:calc(var(--by-fs)*var(--u));font-weight:var(--w-proof);letter-spacing:var(--proof-ls);color:rgba(255,255,255,.95);
+  text-shadow:0 calc(1*var(--u)) calc(12*var(--u)) rgba(0,0,0,.35);
+}
+.logos{display:flex;align-items:center;gap:calc(var(--logo-gap)*var(--u));filter:drop-shadow(0 calc(1*var(--u)) calc(10*var(--u)) rgba(0,0,0,.30))}
+.logos span{
+  display:block;font-family:var(--font-display);font-variation-settings:"opsz" 32;
+  font-size:calc(21*var(--u));font-weight:var(--w-semibold);letter-spacing:-0.035em;color:#fff;line-height:1;white-space:nowrap;
+}
+.logos span:nth-child(2){font-weight:var(--w-cta);letter-spacing:.08em;text-transform:uppercase;font-size:calc(15*var(--u))}
+.logos span:nth-child(3){font-style:italic;font-weight:var(--w-cta);letter-spacing:-0.02em}
+
+/* ---------------------------------------------------------------- conversation */
+.thread{
+  display:none;width:calc((var(--card-w) + 12)*var(--u));flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+  padding:calc(18*var(--u)) calc(6*var(--u)) calc(6*var(--u));scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 calc(22*var(--u)));mask-image:linear-gradient(180deg,transparent 0,#000 calc(22*var(--u)));
+}
+.chatting .thread{display:flex;flex-direction:column;gap:calc(16*var(--u))}
+.chatting .hero{justify-content:flex-end;gap:calc(18*var(--vu));padding-top:calc(26*var(--vu))}
+.chatting .h1{font-size:calc(24*var(--u))}
+.chatting .head{gap:calc(6*var(--u))}
+.chatting .affirm{min-height:0;font-size:max(11.5px,calc(12.5*var(--u)))}
+.chatting .proof{display:none}
+.chatting{padding-bottom:calc(34*var(--vu))}
+.chatting .attachments{margin-bottom:calc(-10*var(--vu))}
+
+.msg{max-width:100%;animation:e-populate .45s var(--e-soft) both}
+.msg.user{
+  align-self:flex-end;max-width:78%;padding:10px 14px;border-radius:16px 16px 4px 16px;
+  background:rgba(41,41,43,.9);box-shadow:inset 0 0 0 1px rgba(214,228,255,.12);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  font-size:max(13.5px,calc(13.5*var(--u)));line-height:1.5;color:#ececee;white-space:pre-wrap;word-wrap:break-word;
+}
+.msg.user .files{display:block;margin-top:4px;font-size:11.5px;color:#a9aaad}
+.msg.bot{
+  align-self:stretch;padding:max(14px,calc(18*var(--u))) max(16px,calc(22*var(--u)));border-radius:max(14px,calc(20*var(--u)));
+  background:rgba(22,22,25,.80);box-shadow:inset 0 0 0 1px rgba(214,228,255,.10),0 12px 40px rgba(0,0,0,.25);
+  backdrop-filter:blur(20px) saturate(112%);-webkit-backdrop-filter:blur(20px) saturate(112%);
+  font-size:max(14px,calc(14.5*var(--u)));line-height:1.6;color:#e4e4e7;letter-spacing:.002em;
+}
+.md>*+*{margin-top:.7em}
+.md h1,.md h2,.md h3,.md h4{font-weight:600;line-height:1.3;color:#fff;letter-spacing:-.01em}
+.md h1{font-size:1.25em}.md h2{font-size:1.15em}.md h3,.md h4{font-size:1.02em}
+.md strong{color:#fff;font-weight:600}
+.md em{color:#d8d8dc}
+.md ul,.md ol{padding-left:1.25em}
+.md li+li{margin-top:.3em}
+.md li::marker{color:#F49D70}
+.md a{color:#FBBC94;text-decoration:underline;text-decoration-color:rgba(251,188,148,.4);text-underline-offset:2px}
+.md code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;padding:.1em .35em;border-radius:5px;background:rgba(255,255,255,.08)}
+.md pre{padding:10px 12px;border-radius:10px;background:rgba(0,0,0,.35);overflow-x:auto}
+.md pre code{padding:0;background:none}
+.md blockquote{border-left:2px solid #F49D70;padding-left:12px;color:#cfcfd3}
+.md hr{border:0;height:1px;background:rgba(255,255,255,.1)}
+.md .tbl{overflow-x:auto;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.md table{width:100%;border-collapse:collapse;font-size:.9em;font-variant-numeric:tabular-nums}
+.md th,.md td{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);white-space:nowrap}
+.md th{font-weight:600;color:#bdbdc2;font-size:.85em;letter-spacing:.02em;background:rgba(255,255,255,.04)}
+.md tr:last-child td{border-bottom:0}
+.status{display:flex;align-items:center;gap:9px;font-size:max(12.5px,calc(12.5*var(--u)));color:#a9aaad}
+.md+.status{margin-top:.8em}
+.status i{width:7px;height:7px;border-radius:50%;background:#F49D70;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.1)}}
+.sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+.sources b{font-size:11.5px;font-weight:500;color:#8b8c8e;margin-right:2px;align-self:center}
+.sources a{font-size:11.5px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.06);color:#c3c3c7;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sources a:hover{background:rgba(255,255,255,.12);color:#fff}
+.opts{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.opts button{
+  padding:8px 13px;border-radius:10px;font-size:max(12.5px,calc(12.5*var(--u)));font-weight:500;color:#e8e8ea;
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.09);
+  transition:background .18s ease,border-color .18s ease;
+}
+.opts button:hover{background:linear-gradient(180deg,rgba(251,188,148,.22),rgba(232,134,84,.12));border-color:rgba(251,188,148,.4)}
+.err{color:#ffb4a0}
+
+/* ---------------------------------------------------------------- drawer */
+.drawer{position:fixed;inset:0;z-index:20;display:flex;justify-content:flex-end;visibility:hidden}
+.drawer.open{visibility:visible}
+.drawer .scrim{position:absolute;inset:0;background:rgba(5,7,10,.45);opacity:0;transition:opacity .3s ease}
+.drawer.open .scrim{opacity:1}
+.panel{
+  position:relative;width:min(620px,100%);height:100%;display:flex;flex-direction:column;
+  background:rgba(22,22,25,.92);box-shadow:inset 1px 0 0 rgba(214,228,255,.10),-20px 0 60px rgba(0,0,0,.35);
+  backdrop-filter:blur(24px) saturate(112%);-webkit-backdrop-filter:blur(24px) saturate(112%);
+  transform:translateX(24px);opacity:0;transition:transform .38s var(--e-primary),opacity .3s ease;
+  padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);
+}
+.drawer.open .panel{transform:none;opacity:1}
+.panel header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px 24px 14px}
+.panel h2{font-size:19px;font-weight:600;letter-spacing:-.01em}
+.panel .sub{font-size:12.5px;color:#8b8c8e;margin-top:3px}
+.x{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.07);color:#ccc;font-size:18px;flex:none}
+.x:hover{background:rgba(255,255,255,.14);color:#fff}
+.panel .body{flex:1;overflow-y:auto;padding:0 24px 24px;scrollbar-width:thin}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.tile{padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
+.tile b{display:block;font-size:19px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile span{font-size:11px;color:#8b8c8e}
+.search{width:100%;height:38px;padding:0 12px;border-radius:10px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);font-size:13.5px;margin-bottom:10px;outline:none}
+.search:focus{box-shadow:inset 0 0 0 1px rgba(251,188,148,.5)}
+.vlist{display:flex;flex-direction:column;gap:6px}
+.v{
+  display:grid;grid-template-columns:1fr auto;gap:2px 12px;width:100%;text-align:left;padding:11px 12px;border-radius:12px;
+  background:rgba(255,255,255,.035);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);transition:background .15s ease;
+}
+.v:hover{background:rgba(255,255,255,.08)}
+.v .t{font-size:14px;font-weight:550;color:#f2f2f4}
+.v .m{font-size:12px;color:#8b8c8e}
+.v .mi{font-size:13.5px;font-weight:550;text-align:right;font-variant-numeric:tabular-nums}
+.v .fl{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.v .fl em{font-style:normal;font-size:10.5px;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.07);color:#b9b9bd}
+.v .fl em.hot{background:rgba(244,157,112,.18);color:#FBBC94}
+.bar{height:4px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:6px;grid-column:1/-1;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#FBBC94,#E88654)}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.note+.note{margin-top:6px}
+.note p{flex:1;font-size:13.5px;line-height:1.5;color:#e4e4e7}
+.note small{display:block;font-size:11px;color:#8b8c8e;margin-top:3px}
+.empty{font-size:13.5px;line-height:1.6;color:#a9aaad;padding:18px 2px}
+
+/* passcode */
+.gate{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(5,7,10,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:20px}
+.gate.show{display:flex}
+.gate form{width:min(360px,100%);padding:24px;border-radius:20px;background:rgba(30,30,33,.95);box-shadow:inset 0 0 0 1px rgba(214,228,255,.14),0 20px 60px rgba(0,0,0,.4)}
+.gate h2{font-size:18px;font-weight:600}
+.gate p{font-size:13px;color:#a9aaad;margin:6px 0 16px}
+.gate input{width:100%;height:42px;padding:0 12px;border-radius:11px;background:rgba(255,255,255,.07);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);outline:none;font-size:15px}
+.gate button{margin-top:12px;width:100%;height:42px;border-radius:11px;font-weight:600;color:#1a1a1a;background:linear-gradient(163deg,#FBBC94 0%,#F49D70 46%,#E88654 100%)}
+
+/* ================================================================ TABLET */
+@media (min-width:600px) and (max-width:1180px) and (min-height:600px){
+  :root{--u:1px}
+  .frame{padding:clamp(24px,3.4vh,44px) clamp(28px,4.2vw,60px) clamp(26px,4.4vh,56px)}
+  .chatting.frame{padding-bottom:clamp(18px,2.6vh,32px)}
+  .brand{font-size:clamp(15px,1.7vw,18.49px);gap:clamp(9px,1vw,12px)}
+  .brand .mark{width:clamp(28px,3vw,34px);height:clamp(28px,3vw,34px)}
+  .links{top:50%;transform:translate(-50%,-50%);gap:clamp(18px,3.4vw,50px)}
+  .links a{font-size:clamp(14px,1.75vw,21.69px)}
+  .cta{width:clamp(108px,11.5vw,140px);height:clamp(36px,3.8vw,43px);font-size:clamp(13px,1.35vw,15.7px);margin-top:0;align-self:center}
+  .h1{font-size:clamp(27px,4.3vw,44px);line-height:1.12}
+  .chatting .h1{font-size:clamp(20px,2.6vw,26px)}
+  .affirm{max-width:min(100%,640px);font-size:clamp(13px,1.5vw,16px)}
+  .card{
+    width:min(100%,clamp(516px,74vw,760px));height:auto;margin-right:0;
+    padding:clamp(15px,1.9vw,24px);border-radius:clamp(17px,2.1vw,26px);
+    display:flex;flex-direction:column;gap:clamp(20px,3.2vh,44px);
+  }
+  .ph{position:static;white-space:normal;font-size:clamp(11px,1.35vw,14px);line-height:1.4;height:auto;min-height:2.8em;max-height:9em}
+  .ph:not(:placeholder-shown){font-size:clamp(13px,1.5vw,15px)}
+  .tools{position:static;height:auto;display:flex;flex-direction:row;flex-wrap:wrap;gap:clamp(10px,1.4vw,18px)}
+  .chips{flex-wrap:nowrap;gap:clamp(6px,0.85vw,10px);height:auto}
+  .chip{width:auto;height:clamp(29px,3.4vh,34px);padding:0 clamp(7px,1vw,13px);font-size:clamp(9.6px,1.12vw,12.5px);gap:clamp(4px,.5vw,6px)}
+  .chip svg{width:calc(var(--iw)*1.1px)}
+  .chip span{transform:none}
+  .right{position:static;display:flex;align-items:center;margin-left:auto;gap:0}
+  .right>*{position:static}
+  .model{font-size:clamp(9.8px,1.12vw,12.5px)}
+  .attach{margin-left:clamp(9px,1.4vw,20px)}
+  .attach svg{width:clamp(17px,1.8vw,21px)}
+  .send{margin-left:clamp(9px,1.3vw,18px);width:clamp(32px,3.5vw,38px);height:clamp(32px,3.5vw,38px)}
+  .send svg{width:clamp(11px,1.15vw,13px)}
+  .attachments{width:min(100%,clamp(516px,74vw,760px));margin-bottom:-24px}
+  .thread{width:min(100%,clamp(516px,74vw,760px))}
+  .proof{gap:clamp(15px,2.5vh,30px)}
+  .proof p{font-size:clamp(12.5px,1.3vw,14.01px)}
+  .logos{gap:clamp(34px,5vw,62px)}
+  .logos span{font-size:clamp(17px,1.9vw,21px)}
+  .logos span:nth-child(2){font-size:clamp(12px,1.35vw,15px)}
+}
+
+/* ================================================================ COMPACT */
+@media (max-width:599px),(max-height:599px) and (max-width:1180px){
+  :root{--u:1px}
+  .frame{
+    padding:
+      max(18px,env(safe-area-inset-top))
+      max(clamp(18px,5.2vw,40px),env(safe-area-inset-right))
+      max(20px,env(safe-area-inset-bottom))
+      max(clamp(18px,5.2vw,40px),env(safe-area-inset-left));
+  }
+  .chatting.frame{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+  .links,.nav>.cta{display:none}
+  .brand{font-size:17px;gap:10px}
+  .brand .mark{width:30px;height:30px}
+  .burger{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+    width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);cursor:pointer;
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  }
+  .burger i{display:block;width:17px;height:1.6px;border-radius:2px;background:#fff;transition:transform .25s ease}
+  #menu:checked~.nav .burger i:first-child{transform:translateY(2.8px) rotate(45deg)}
+  #menu:checked~.nav .burger i:last-child{transform:translateY(-2.8px) rotate(-45deg)}
+  .sheet{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s cubic-bezier(.4,0,.2,1);position:relative;z-index:5;flex:none}
+  .sheet>div{overflow:hidden}
+  #menu:checked~.sheet{grid-template-rows:1fr}
+  .sheet-panel{
+    margin-top:12px;padding:10px;border-radius:16px;background:rgba(24,24,27,.86);border:1px solid rgba(255,255,255,.09);
+    -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);display:flex;flex-direction:column;gap:2px;
+  }
+  .sheet-panel a{font-size:15px;padding:11px 10px;border-radius:10px}
+  .sheet-panel a:hover{background:rgba(255,255,255,.06)}
+  .sheet-panel .cta{width:100%;height:40px;border-radius:11px;font-size:15px;margin:6px 0 0;align-self:stretch}
+  .sheet-panel .cta span{transform:none}
+  .hero{gap:clamp(18px,4vh,36px)}
+  .h1{width:100%;max-width:15ch;font-size:clamp(29px,7.6vw,50px);line-height:1.14;letter-spacing:-.012em}
+  .chatting .h1{max-width:none;font-size:clamp(19px,5vw,24px)}
+  .affirm{font-size:clamp(13px,3.6vw,16px);max-width:34ch}
+  .chatting .affirm{font-size:12px;max-width:none}
+  .chatting .hero{gap:10px;padding-top:14px}
+  .chatting .chips{display:none}
+  .card{
+    width:100%;max-width:600px;height:auto;margin-right:0;display:flex;flex-direction:column;
+    gap:clamp(16px,4.6vh,34px);padding:clamp(13px,3.4vw,18px);border-radius:clamp(17px,4.4vw,24px);
+  }
+  .chatting .card{gap:12px}
+  .ph{position:static;height:auto;min-height:1.5em;max-height:7em;font-size:clamp(9.4px,2.95vw,14px);line-height:1.4}
+  .ph:placeholder-shown{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:1.5em}
+  .ph:not(:placeholder-shown){font-size:16px}
+  .tools{position:static;height:auto;display:flex;flex-direction:column;align-items:stretch;gap:12px}
+  .chips{flex-wrap:wrap;gap:6px;height:auto}
+  .chip{width:auto;height:32px;padding:0 11px;font-size:12px;gap:6px}
+  .chip svg{width:calc(var(--iw)*1.1px)}
+  .chip span{transform:none}
+  .right{position:static;display:flex;align-items:center;justify-content:flex-start}
+  .right>*{position:static}
+  .model{font-size:12.5px;gap:7px}
+  .model svg{width:8px}
+  .attach{margin-left:auto}
+  .attach svg{width:21px}
+  .send{margin-left:14px;width:40px;height:40px}
+  .send svg{width:13px}
+  .attachments{width:100%;max-width:600px;margin-bottom:-6px}
+  .thread{width:100%;max-width:600px;padding:14px 0 4px}
+  .msg.user{max-width:88%}
+  .msg.bot{padding:14px 15px;font-size:14.5px}
+  .proof{gap:14px}
+  .proof p{font-size:12.5px}
+  .logos{gap:clamp(20px,6vw,40px)}
+  .logos span{font-size:clamp(15px,4.4vw,19px)}
+  .logos span:nth-child(2){font-size:clamp(11px,3.2vw,14px)}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .panel header,.panel .body{padding-left:18px;padding-right:18px}
+}
+@media (max-width:1180px) and (max-height:560px){
+  .hero{gap:16px}
+  .h1{font-size:clamp(24px,5.4vh,34px)}
+  .proof{gap:10px}
+  .frame{padding-top:10px}
+}
+
+/* ================================================================ ENTRANCE */
+@keyframes e-settle-down{from{opacity:0;transform:translateY(calc(-5*var(--u)))}}
+@keyframes e-settle-up{from{opacity:0;transform:translateY(calc(6*var(--u)))}}
+@keyframes e-mark{from{transform:scale(.9)}}
+@keyframes e-focus{from{opacity:0;transform:translateY(calc(14*var(--u)));filter:blur(calc(6*var(--u)))}to{filter:blur(0)}}
+@keyframes e-panel{from{opacity:0;transform:translateY(calc(18*var(--u))) scale(.985)}}
+@keyframes e-populate{from{opacity:0;transform:translateY(calc(4*var(--u)))}}
+@keyframes e-send{from{transform:scale(.82)}}
+@media (prefers-reduced-motion:no-preference){
+  .anim .brand{animation:e-settle-down .58s var(--e-soft) .06s both}
+  .anim .brand .mark{animation:e-mark .62s var(--e-primary) .06s both}
+  .anim .links a{animation:e-settle-down .50s var(--e-soft) both}
+  .anim .links a:nth-child(1){animation-delay:.16s}
+  .anim .links a:nth-child(2){animation-delay:.21s}
+  .anim .links a:nth-child(3){animation-delay:.26s}
+  .anim .links a:nth-child(4){animation-delay:.31s}
+  .anim .nav>.cta{animation:e-settle-down .55s var(--e-soft) .34s both}
+  .anim .h1{animation:e-focus 1s var(--e-primary) .30s both;will-change:transform,opacity}
+  .anim .affirm{animation:e-settle-up .7s var(--e-soft) .52s both}
+  .anim .card{animation:e-panel .9s var(--e-primary) .62s both;will-change:transform,opacity}
+  .anim .ph{animation:e-populate .5s var(--e-soft) .88s both}
+  .anim .chips{animation:e-populate .5s var(--e-soft) .94s both}
+  .anim .right{animation:e-populate .5s var(--e-soft) 1s both}
+  .anim .send{animation:e-send .5s var(--e-primary) 1s both}
+  .anim .proof p{animation:e-settle-up .55s var(--e-soft) 1.08s both}
+  .anim .logos span{animation:e-settle-up .55s var(--e-soft) both}
+  .anim .logos span:nth-child(1){animation-delay:1.16s}
+  .anim .logos span:nth-child(2){animation-delay:1.22s}
+  .anim .logos span:nth-child(3){animation-delay:1.28s}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <video class="stage-video" autoplay muted loop playsinline preload="auto"
+    src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_124724_bc041163-d651-425f-aea3-2acc1efc2c96.mp4"></video>
+
+  <div class="frame" id="frame">
+    <input type="checkbox" id="menu" aria-label="Toggle menu">
+
+    <header class="nav">
+      <a class="brand" href="#" aria-label="Absolute Advisor home" data-act="home">
+        <svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="#9C86CE"/><circle cx="17" cy="17" r="8.6" fill="#FFFFFF"/><circle cx="17" cy="17" r="3.7" fill="#151519"/></svg>
+        <span class="word">Absolute</span>
+      </a>
+      <nav class="links" aria-label="Primary">
+        <a href="#" data-act="fleet">Fleet</a>
+        <a href="#" data-act="playbook">Playbook</a>
+        <a href="#" data-act="seasons">Seasons</a>
+        <a href="#" data-act="notes">Notes</a>
+      </nav>
+      <a class="cta" href="#" data-act="new"><span>New Chat</span></a>
+      <label class="burger" for="menu" aria-label="Menu"><i></i><i></i></label>
+    </header>
+
+    <div class="sheet"><div><div class="sheet-panel">
+      <a href="#" data-act="fleet">Fleet</a>
+      <a href="#" data-act="playbook">Playbook</a>
+      <a href="#" data-act="seasons">Seasons</a>
+      <a href="#" data-act="notes">Notes</a>
+      <a class="cta" href="#" data-act="new"><span>New Chat</span></a>
+    </div></div></div>
+
+    <main class="hero">
+      <div class="head">
+        <h1 class="h1" id="greet">Welcome back, Komal.</h1>
+        <p class="affirm" id="affirm" aria-live="polite"></p>
+      </div>
+
+      <div class="thread" id="thread" aria-live="polite"></div>
+      <div class="attachments" id="attachments"></div>
+
+      <form class="card" id="card" onsubmit="return false">
+        <textarea class="ph" id="input" rows="1" aria-label="Ask the Absolute Advisor"
+          placeholder="Should I swap an Aviator for a new XTS? Ask me anything about the fleet..."></textarea>
+        <div class="tools">
+          <div class="chips">
+            <button class="chip" type="button" data-act="swap" style="--cw:107;--pl:12;--ig:3.7;--iw:15.06">
+              <svg viewBox="0 0 16 14" aria-hidden="true"><path fill="currentColor" d="M11.2.4a.9.9 0 0 1 1.27 0l2.9 2.9a.9.9 0 0 1 0 1.27l-2.9 2.9a.9.9 0 1 1-1.27-1.27l1.36-1.37H2.2a.9.9 0 1 1 0-1.8h10.36L11.2 1.67a.9.9 0 0 1 0-1.27Zm-6.4 6a.9.9 0 0 1 0 1.27L3.44 9.03H13.8a.9.9 0 1 1 0 1.8H3.44l1.36 1.37a.9.9 0 1 1-1.27 1.27L.63 10.57a.9.9 0 0 1 0-1.27l2.9-2.9a.9.9 0 0 1 1.27 0Z"/></svg>
+              <span>Swap Advisor</span>
+            </button>
+            <button class="chip" type="button" data-act="idle" style="--cw:108;--pl:16;--ig:3.9;--iw:11.8">
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M6 0a6 6 0 1 1 0 12A6 6 0 0 1 6 0Zm0 2.1a.85.85 0 0 0-.85.85V6c0 .23.09.44.25.6l2.1 2.1a.85.85 0 0 0 1.2-1.2L6.85 5.65v-2.7A.85.85 0 0 0 6 2.1Z"/></svg>
+              <span>Idle Cars</span>
+            </button>
+            <button class="chip" type="button" data-act="play" style="--cw:107;--pl:15.8;--ig:2.9;--iw:12.13">
+              <svg viewBox="0 0 12 13" aria-hidden="true"><path fill="currentColor" d="M6.9.2c.4-.33 1 .02.9.53L7.12 4.9h3.48c.52 0 .8.6.47 1L5.1 12.8c-.4.34-1-.02-.9-.53l.68-4.17H1.4c-.52 0-.8-.6-.47-1L6.9.2Z"/></svg>
+              <span>Today's Play</span>
+            </button>
+          </div>
+          <div class="right">
+            <button class="model" type="button" id="model" data-on="true" aria-label="Toggle live web search">
+              <span id="modelLabel">Live Search</span>
+              <svg viewBox="0 0 7 5" aria-hidden="true"><path fill="currentColor" d="M.36.4a.9.9 0 0 1 1.27 0L3.5 2.25 5.37.4A.9.9 0 1 1 6.64 1.66l-2.5 2.5a.9.9 0 0 1-1.28 0L.36 1.66a.9.9 0 0 1 0-1.27Z"/></svg>
+            </button>
+            <button class="attach" type="button" id="attach" aria-label="Attach photos, PDFs or spreadsheets">
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M16.2 9.4 10 15.6a4.1 4.1 0 0 1-5.8-5.8l6.5-6.5a2.75 2.75 0 0 1 3.9 3.9l-6.4 6.4a1.4 1.4 0 0 1-2-2L12 5.8" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="send" type="submit" id="send" aria-label="Ask">
+              <svg class="up" viewBox="0 0 12 14" aria-hidden="true"><path fill="#fff" d="M5.25.4a1.05 1.05 0 0 1 1.5 0l4.8 4.8a1.05 1.05 0 1 1-1.49 1.49L7.05 3.68V12.9a1.05 1.05 0 1 1-2.1 0V3.68L1.94 6.69A1.05 1.05 0 1 1 .45 5.2L5.25.4Z"/></svg>
+              <svg class="stop" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="2.2" fill="#fff"/></svg>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="file" multiple hidden accept="image/*,.pdf,.csv,.tsv,.txt,.md,.json">
+      </form>
+    </main>
+
+    <footer class="proof">
+      <p>Chauffeured every mile between</p>
+      <div class="logos" aria-label="Boston, North Haven, New Jersey">
+        <span>Boston</span><span>North Haven</span><span>New Jersey</span>
+      </div>
+    </footer>
+  </div>
+
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <aside class="panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+      <header>
+        <div><h2 id="drawerTitle"></h2><div class="sub" id="drawerSub"></div></div>
+        <button class="x" type="button" data-close aria-label="Close">×</button>
+      </header>
+      <div class="body" id="drawerBody"></div>
+    </aside>
+  </div>
+
+  <div class="gate" id="gate">
+    <form id="gateForm">
+      <h2>Welcome, Komal</h2>
+      <p>Enter your passcode to open the Advisor.</p>
+      <input type="password" id="gateInput" autocomplete="current-password" aria-label="Passcode">
+      <button type="submit">Open</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const AFFIRMATIONS = [
+  "Peace is the quiet engine behind every great decision.",
+  "Today, lead with calm. The right moves will follow.",
+  "Kindness is never wasted. It always finds its way back.",
+  "Your work moves people toward the moments that matter most.",
+  "Success is built one on-time pickup at a time.",
+  "Breathe in. You've already handled harder days than this one.",
+  "Every client you treat well becomes a story told about you.",
+  "Steady beats hurried. Clear beats clever.",
+  "You are building something that outlasts any single day.",
+  "Gratitude turns what you have into enough, and then into more.",
+  "Protect your peace. It is your best business asset.",
+  "Small improvements, done daily, become a different company in a year.",
+  "The way you treat your drivers is the way your clients get treated.",
+  "Peace of mind is the real luxury you sell.",
+  "Be proud of how far you've come, Komal.",
+  "Hard days build the kind of strength easy days never could.",
+  "A kind word to your team today could change their whole week.",
+  "Great companies are built by people who keep showing up.",
+  "Let today be simple: one good decision at a time.",
+  "Your calm is contagious. Spread it.",
+  "Wherever you are headed, you are closer than yesterday.",
+  "Success loves preparation, and you are prepared.",
+  "Choose progress over perfection today.",
+  "Generosity is a form of strength.",
+  "You don't have to carry it all at once. Just the next mile.",
+  "The best reputation is built quietly, ride after ride.",
+  "Every road leads somewhere good when you drive it with purpose.",
+  "Rest is part of the work, not a break from it.",
+  "Be patient with growth. Roots come before fruit.",
+  "You make other people's biggest days go smoothly. That matters.",
+  "Peace begins the moment you stop fighting what you can't control.",
+  "Positive energy is the best thing you can bring into any room.",
+  "Lead with heart, follow through with discipline.",
+  "Your future self is thanking you for the work you do today.",
+  "Kindness costs nothing and builds everything.",
+  "A clear mind sees opportunities a rushed mind misses.",
+  "Celebrate the wins, even the small ones.",
+  "There is always a way forward. You will find it.",
+  "You are allowed to be both a work in progress and a success.",
+  "The right people are drawn to how you do business.",
+  "Every sunrise is a fresh route. Take it.",
+  "Integrity is the one thing no competitor can copy.",
+  "Slow down to speed up. Clarity saves time.",
+  "Your consistency is your competitive advantage.",
+  "Be the calm voice when everything around you is loud.",
+  "Good things are coming because you keep doing good things.",
+  "Today's patience is tomorrow's profit.",
+  "The most valuable thing you'll carry today is your attitude.",
+  "Serve people well, and success will find its way to you.",
+  "Your team rises to the level of care you show them.",
+  "Think long-term. Act today.",
+  "A grateful heart is a magnet for good fortune.",
+  "You've earned every mile of where you are.",
+  "Trust the process you've built.",
+  "When in doubt, choose kindness. It's rarely the wrong call.",
+  "Peace is not the absence of busy. It's calm in the middle of it.",
+  "Success is a daily habit, not a single event.",
+  "There is strength in asking for help, and wisdom in accepting it.",
+  "Let go of yesterday's traffic. Today's road is open.",
+  "The work you do carries families, couples and dreams.",
+  "Be kind to yourself today. You're doing better than you think.",
+  "Opportunity rarely knocks loudly. Stay alert.",
+  "Excellence is doing ordinary things extraordinarily well.",
+  "A smile at the curb is worth more than any advertisement.",
+  "You are the kind of leader people want to follow.",
+  "Focus on what you can build, not on what you can't control.",
+  "The best is not behind you. It's up the road.",
+  "Stay humble, stay hungry, stay kind.",
+  "You were built for this.",
+  "Peaceful mind, powerful decisions.",
+  "Every problem is a chance to show what your company is made of.",
+  "Growth is uncomfortable because you've never been here before.",
+  "Give more than expected. It always comes back.",
+  "Your reputation is arriving before you do. Make it a good one.",
+  "Take a moment. Look at what you've built. Be proud.",
+  "Keep your promises small and your delivery big.",
+  "Joy is found in the journey, not only the destination.",
+  "You don't need to be everywhere. You need to be intentional.",
+  "Treat every ride like it's the most important day in someone's life. Sometimes it is.",
+  "Calm seas never made a skilled captain.",
+  "The quality of your life is the quality of your relationships.",
+  "Measure twice, commit once, then commit fully.",
+  "There's enough success out there for everyone who keeps working.",
+  "Clarity is kindness, to your team and to yourself.",
+  "Today is a good day to make someone's day.",
+  "A company is only as strong as its culture. Yours is growing.",
+  "Inner peace is the foundation of outer success.",
+  "The drive matters as much as the destination.",
+  "Show up with energy and the day will meet you halfway.",
+  "Mistakes are tuition. Learn the lesson and move on.",
+  "Good leaders make others feel capable.",
+  "Stay the course. Compounding is quiet until it isn't.",
+  "Your kindness today is someone's turning point.",
+  "The details you care about are the reason clients come back.",
+  "Be where your feet are.",
+  "Let your work speak, and keep it speaking.",
+  "Protect your mornings. They shape your whole day.",
+  "Positivity is a choice you get to make every hour.",
+  "Every client is a relationship, not a transaction.",
+  "Keep going, Komal. The best chapter is still being written.",
+  "Wisdom is knowing what to ignore.",
+  "Discipline is choosing what you want most over what you want now.",
+  "You can't pour from an empty cup. Refill yours.",
+  "Peace is a practice, not a destination.",
+  "Believe in the long game.",
+  "You've solved every problem that has come your way so far.",
+  "A thankful team is a loyal team. Say thank you often.",
+  "Success tastes sweeter when it's shared.",
+  "Take the high road. The view is better.",
+  "Good energy is the best fuel you can run on.",
+  "Each day is a chance to raise your own standard.",
+  "The people you help today will remember how you made them feel.",
+  "Simplicity is the ultimate sophistication.",
+  "Great things take time. So does anything worth keeping.",
+  "When you lift others, you rise too.",
+  "Stay curious. Every question opens a new road.",
+  "Quiet confidence outlasts loud ambition.",
+  "Be the reason someone believes in good service again.",
+  "A peaceful leader creates a peaceful company.",
+  "Hope is a plan with a heartbeat.",
+  "You are exactly where you need to be to take the next step.",
+  "Hustle with a smile. It's more fun that way.",
+  "The best investment you'll ever make is in people.",
+  "Kindness is the language every client understands.",
+  "Be gentle with yourself on the hard days.",
+  "Every mile driven with care is a mile of trust earned.",
+  "Aim high, drive steady.",
+  "Today you get to build the company you imagined.",
+  "Respect is earned in small moments.",
+  "Let your gratitude be louder than your worries.",
+  "A good name is worth more than great riches.",
+  "Success is liking yourself, liking what you do, and liking how you do it.",
+  "One kind act can change the direction of someone's day.",
+  "Leaders don't create followers. They create more leaders.",
+  "Peace comes from within. Don't seek it without.",
+  "Every sunrise brings new routes to success.",
+  "The harder you work for something, the greater you'll feel when you achieve it.",
+  "Believe you can and you're halfway there.",
+  "Be the energy you want to attract.",
+  "What you do every day matters more than what you do once in a while.",
+  "Stay patient and trust your journey.",
+  "Do what is right, not what is easy.",
+  "Service is the rent we pay for the privilege of living.",
+  "Big goals are reached by small, steady steps.",
+  "Your attitude determines your direction.",
+  "Radiate kindness. It's the best kind of branding.",
+  "A calm driver gets everyone home safely. So does a calm leader.",
+  "Your vision is worth the effort.",
+  "Victory belongs to the most persevering.",
+  "Be thankful for what you have, and you'll end up having more.",
+  "Everything you need to succeed today is already within you.",
+  "The comeback is always stronger than the setback.",
+  "Work hard in silence. Let success make the noise.",
+  "Kind hearts are the gardens, kind thoughts are the roots.",
+  "Hold the vision, trust the process.",
+  "Every expert was once a beginner who didn't give up.",
+  "Your peace is more important than proving a point.",
+  "The road to success is always under construction. Keep building.",
+  "Choose people who choose you, and serve them well.",
+  "You have the power to make today remarkable.",
+  "Doing your best is more important than being the best.",
+  "Nothing can dim the light that shines from within.",
+  "Surround yourself with people who make you better.",
+  "The best way to predict the future is to create it.",
+  "Stay positive, work hard, make it happen.",
+  "Life is short. Be kind, be brave, be grateful.",
+  "Your hard work is planting seeds you'll harvest for years.",
+  "Leadership is service at its highest level.",
+  "Peace grows where gratitude is planted.",
+  "Excellence is not a skill, it's an attitude.",
+  "There is no traffic on the extra mile.",
+  "Keep your eyes on the road ahead, not the mirror behind.",
+  "Great service is remembered long after the price is forgotten.",
+  "Today, give someone the benefit of the doubt.",
+  "Success is not final, failure is not fatal. Courage continues.",
+  "Be proud of the jobs your company creates.",
+  "Where focus goes, energy flows.",
+  "Start where you are. Use what you have. Do what you can.",
+  "Stay grounded, even as you grow.",
+  "Believe in the goodness of people, and bring out the best in them.",
+  "Your story inspires more people than you know.",
+  "Calm is a superpower.",
+  "Take care of your people, and they will take care of your business.",
+  "Every day is a chance to be better than yesterday.",
+  "Patience, persistence and perspiration make an unbeatable combination.",
+  "Be the kind of company people brag about.",
+  "Let kindness be your signature.",
+  "The secret of getting ahead is getting started.",
+  "Peace, love and a full schedule.",
+  "You deserve the success you're working toward.",
+  "Grace under pressure is a sign of strength.",
+  "The only limits are the ones you accept.",
+  "Dream big, start small, act now.",
+  "Your hard work today is a gift to your future.",
+  "Good things take time. Great things take a little longer.",
+  "Give yourself credit for the progress you've made.",
+  "You are capable of amazing things.",
+  "Stay kind. It makes you beautiful inside and out.",
+  "The best service comes from the heart.",
+  "Growth happens one decision at a time.",
+  "You bring value wherever you go.",
+  "Keep calm and carry on, one ride at a time.",
+  "Your dedication is inspiring.",
+  "Success is the sum of small efforts repeated daily.",
+  "The world needs more people like you, Komal.",
+  "Build bridges, not walls.",
+  "Be a light for someone today.",
+  "Nothing worth having comes easy, and you know that well.",
+  "Happiness is a direction, not a place.",
+  "Let your actions speak louder than your words.",
+  "Your business is a reflection of your values, and it shows.",
+  "You make the complicated look easy.",
+  "There's power in a peaceful mind.",
+  "Every client served well is a seed planted.",
+  "You're not just building a business. You're building a legacy.",
+  "Opportunities multiply as they are seized.",
+  "Stay focused on the good.",
+  "Consistency turns ordinary into extraordinary.",
+  "Today is full of possibilities.",
+  "Be patient. Your time is coming.",
+  "Every day is a fresh start.",
+  "Give your best, and let go of the rest.",
+  "Leadership is about making others better.",
+  "Kindness is a gift everyone can afford to give.",
+  "Trust yourself. You've been through a lot.",
+  "You're making a difference, one journey at a time.",
+  "Great things never came from comfort zones.",
+  "Your positive attitude is your greatest asset.",
+  "The key to success is to focus on goals, not obstacles.",
+  "Peace starts with a single breath.",
+  "Stay strong, stay kind, stay focused.",
+  "You have what it takes.",
+  "Treat others the way you want to be treated.",
+  "Success is a journey, not a destination.",
+  "Be grateful for every mile.",
+  "The best time to plant a tree was 20 years ago. The second best time is now.",
+  "Kindness is contagious. Start an outbreak.",
+  "Your effort today shapes tomorrow.",
+  "Every accomplishment starts with the decision to try.",
+  "Find joy in the ordinary.",
+  "Keep moving forward.",
+  "Believe in yourself and all that you are.",
+  "Your journey is uniquely yours. Own it.",
+  "Leading with kindness is leading with strength.",
+  "Stay open to new ideas. The next big one could come today.",
+  "Take pride in how far you've come, and faith in how far you can go.",
+  "Serenity is not freedom from the storm, but peace amid it.",
+  "Be the reason someone smiles today.",
+  "Do small things with great love.",
+  "Momentum is built one good day at a time.",
+  "Every good ride starts with a good driver. Every good company starts with a good leader.",
+  "You turn challenges into opportunities.",
+  "Strength grows in the moments you think you can't go on but keep going anyway.",
+  "Your reputation is your most valuable vehicle.",
+  "Stay humble. Work hard. Be kind.",
+  "The best views come after the hardest climbs.",
+  "Make today count.",
+  "Your kindness makes the world better.",
+  "Peace is always within reach.",
+  "Success follows those who serve.",
+  "Think big, start now.",
+  "You are stronger than any challenge today brings.",
+  "Appreciate the people who help you get there.",
+  "Each day holds a surprise. Stay open to it.",
+  "Keep your head up and your heart open.",
+  "Good leadership is quiet, consistent and caring.",
+  "Honor your commitments and your commitments will honor you.",
+  "Happiness grows when shared.",
+  "The future belongs to those who prepare for it today.",
+  "You are a builder. Keep building.",
+  "Calm mind, clear road, full calendar.",
+  "The most successful people are the kindest ones.",
+  "Every setback is a setup for a comeback.",
+  "Carry yourself with the confidence of someone who has done hard things, because you have.",
+  "Your best days are still ahead.",
+  "Peace, positivity and progress. That's the route today.",
+  "Kindness at the curb, excellence on the road.",
+  "You are allowed to slow down and still be successful.",
+  "A peaceful morning makes a productive day.",
+  "Today, notice what's going right.",
+  "Good service is a promise kept. Keep making promises.",
+  "The quiet work you do today builds tomorrow's big wins.",
+  "Let peace be the first passenger you pick up today.",
+  "Every thank-you from a client is proof your work matters.",
+  "Wealth is built with patience. Character is built with kindness.",
+  "When you're kind to your team, they're kind to your clients.",
+  "Clarity comes from action, not from overthinking.",
+  "Your ambition and your kindness can ride in the same car.",
+  "There's no shortcut to trust, and you're earning it every day.",
+  "You bring order to other people's busiest days.",
+  "Success isn't only in the numbers. It's in the lives you touch.",
+  "Stay present. This moment is where your power is.",
+  "Bright days start with a bright mind.",
+  "Be the owner your younger self would admire.",
+  "Growth is choosing courage over comfort.",
+  "Every wedding, every flight, every family: you help them arrive.",
+  "Take one thing off your plate today, and do the rest with joy.",
+  "Keep your standards high and your heart soft.",
+  "A good day is built from good minutes. Start with this one.",
+  "The goal isn't more hours. It's more meaning in every hour.",
+  "Peace is a decision. Make it again today.",
+  "Kindness scales better than anything else in business.",
+  "You make hard things look graceful.",
+  "Every client who returns is a vote of confidence in you.",
+  "Let today be the day you're proud of tonight.",
+  "Winning is sweeter when everyone on your team wins with you.",
+  "Trust grows in the details. You never miss the details.",
+  "There's a quiet strength in doing the right thing when no one is watching.",
+  "Be proud of the road behind you and excited for the road ahead.",
+  "Good morning to the leader who keeps everyone moving.",
+  "You're building more than a fleet. You're building a family."
+];
+
+(() => {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const frame = $('#frame'), thread = $('#thread'), input = $('#input'), card = $('#card');
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+    del(k) { try { localStorage.removeItem(k); } catch {} },
+  };
+
+  // ------------------------------------------------------------ entrance teardown
+  const root = document.documentElement;
+  const endAnim = () => root.classList.remove('anim');
+  const lastLogo = document.querySelector('.logos span:last-child');
+  lastLogo.addEventListener('animationend', endAnim, { once: true });
+  setTimeout(endAnim, 2600);
+
+  // ------------------------------------------------------------ greeting + affirmations
+  function greeting() {
+    const h = Number(new Date().toLocaleString('en-US', { hour: 'numeric', hour12: false, timeZone: 'America/New_York' }));
+    const part = h < 5 ? 'Good evening' : h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    $('#greet').textContent = `${part}, Komal.`;
+  }
+  greeting();
+  setInterval(greeting, 60000);
+
+  const affirm = $('#affirm');
+  const order = AFFIRMATIONS.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [order[i], order[j]] = [order[j], order[i]]; }
+  let ai = 0;
+  affirm.textContent = AFFIRMATIONS[order[0]] || '';
+  setInterval(() => {
+    affirm.classList.add('out');
+    setTimeout(() => {
+      ai = (ai + 1) % order.length;
+      affirm.textContent = AFFIRMATIONS[order[ai]];
+      affirm.classList.remove('out');
+    }, 900);
+  }, 40000);
+
+  // ------------------------------------------------------------ api
+  let passcode = store.get('aa.key', '');
+  const headers = () => ({ 'Content-Type': 'application/json', ...(passcode ? { 'x-app-key': passcode } : {}) });
+  async function api(path, opts = {}) {
+    const res = await fetch(path, { ...opts, headers: { ...headers(), ...(opts.headers || {}) } });
+    if (res.status === 401) { showGate(); throw new Error('locked'); }
+    return res;
+  }
+  function showGate() { $('#gate').classList.add('show'); setTimeout(() => $('#gateInput').focus(), 50); }
+  $('#gateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    passcode = $('#gateInput').value.trim();
+    const r = await fetch('/api/unlock', { method: 'POST', headers: headers() });
+    if (r.ok) { store.set('aa.key', passcode); $('#gate').classList.remove('show'); }
+    else { $('#gateInput').value = ''; $('#gateInput').placeholder = 'Try again'; }
+  });
+  fetch('/api/health').then((r) => r.json()).then((h) => {
+    if (h.locked && !passcode) showGate();
+    if (h.locked && passcode) fetch('/api/unlock', { method: 'POST', headers: headers() }).then((r) => { if (!r.ok) showGate(); });
+  }).catch(() => {});
+
+  // ------------------------------------------------------------ markdown (escape first, then a safe subset)
+  const esc = (s) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  function inline(s) {
+    const codes = [];
+    s = s.replace(/`([^`]+)`/g, (_, c) => (codes.push(c), `\u0000${codes.length - 1}\u0000`));
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, t, u) => `<a href="${u}" target="_blank" rel="noopener noreferrer">${t}</a>`);
+    s = s.replace(/(^|[\s(])(https?:\/\/[^\s<)]+[^\s<).,;:!?'"])/g, (_, p, u) => `${p}<a href="${u}" target="_blank" rel="noopener noreferrer">${u.replace(/^https?:\/\/(www\.)?/, '').slice(0, 48)}</a>`);
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/__([^_]+)__/g, '<strong>$1</strong>');
+    s = s.replace(/(^|[^*\w])\*([^*\n]+)\*(?!\w)/g, '$1<em>$2</em>').replace(/(^|[^_\w])_([^_\n]+)_(?!\w)/g, '$1<em>$2</em>');
+    return s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${codes[i]}</code>`);
+  }
+  function md(src) {
+    const lines = esc(src).split('\n');
+    let out = '', i = 0;
+    const isRow = (l) => /^\s*\|.*\|\s*$/.test(l);
+    const cells = (l) => l.trim().replace(/^\||\|$/g, '').split('|').map((c) => inline(c.trim()));
+    while (i < lines.length) {
+      const l = lines[i];
+      if (/^\s*```/.test(l)) {
+        let code = ''; i++;
+        while (i < lines.length && !/^\s*```/.test(lines[i])) code += lines[i++] + '\n';
+        i++; out += `<pre><code>${code}</code></pre>`; continue;
+      }
+      if (isRow(l) && i + 1 < lines.length && /^\s*\|?\s*:?-{2,}/.test(lines[i + 1])) {
+        const head = cells(l); i += 2;
+        let body = '';
+        while (i < lines.length && isRow(lines[i])) body += `<tr>${cells(lines[i++]).map((c) => `<td>${c}</td>`).join('')}</tr>`;
+        out += `<div class="tbl"><table><thead><tr>${head.map((c) => `<th>${c}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div>`;
+        continue;
+      }
+      let m;
+      if ((m = l.match(/^\s*(#{1,4})\s+(.*)$/))) { out += `<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`; i++; continue; }
+      if (/^\s*(-{3,}|\*{3,})\s*$/.test(l)) { out += '<hr>'; i++; continue; }
+      if (/^\s*&gt;\s?/.test(l)) {
+        let q = [];
+        while (i < lines.length && /^\s*&gt;\s?/.test(lines[i])) q.push(lines[i++].replace(/^\s*&gt;\s?/, ''));
+        out += `<blockquote>${inline(q.join('<br>'))}</blockquote>`; continue;
+      }
+      if (/^\s*([-*•])\s+/.test(l) || /^\s*\d+[.)]\s+/.test(l)) {
+        const ordered = /^\s*\d+[.)]\s+/.test(l);
+        const re = ordered ? /^\s*\d+[.)]\s+/ : /^\s*[-*•]\s+/;
+        let items = [];
+        while (i < lines.length && (re.test(lines[i]) || (/^\s{2,}\S/.test(lines[i]) && items.length))) {
+          if (re.test(lines[i])) items.push(lines[i].replace(re, ''));
+          else items[items.length - 1] += ' ' + lines[i].trim();
+          i++;
+        }
+        const tag = ordered ? 'ol' : 'ul';
+        out += `<${tag}>${items.map((t) => `<li>${inline(t)}</li>`).join('')}</${tag}>`; continue;
+      }
+      if (!l.trim()) { i++; continue; }
+      let p = [];
+      while (i < lines.length && lines[i].trim() && !/^\s*(#{1,4}\s|```|[-*•]\s|\d+[.)]\s|&gt;)/.test(lines[i]) && !isRow(lines[i])) p.push(lines[i++]);
+      if (!p.length) p.push(lines[i++]);
+      out += `<p>${inline(p.join('<br>'))}</p>`;
+    }
+    return out;
+  }
+  const OPTS_RE = /\[\[options:\s*([^\]]*)\]\]\s*$/;
+  const visible = (t) => t.replace(OPTS_RE, '').replace(/\[\[[^\]]*\]?$/, '').replace(/\[$/, '').trimEnd();
+
+  // ------------------------------------------------------------ conversation state
+  // history: [{role:'user'|'assistant', text, files?:[names], sources?:[]}]
+  let history = [];
+  const saved = store.get('aa.thread', null);
+  if (saved && Date.now() - saved.at < 8 * 3600e3 && saved.history?.length) history = saved.history;
+  const persist = () => store.set('aa.thread', { at: Date.now(), history });
+
+  function setChatting(on) { frame.classList.toggle('chatting', on); }
+  const scrollDown = () => { thread.scrollTop = thread.scrollHeight; };
+
+  function renderUser(h) {
+    const el = document.createElement('div');
+    el.className = 'msg user';
+    el.textContent = h.text;
+    if (h.files?.length) {
+      const f = document.createElement('span'); f.className = 'files';
+      f.textContent = 'Attached: ' + h.files.join(', ');
+      el.appendChild(f);
+    }
+    thread.appendChild(el);
+  }
+  function renderBot(h) {
+    const el = document.createElement('div');
+    el.className = 'msg bot';
+    el.innerHTML = `<div class="md"></div>`;
+    thread.appendChild(el);
+    fillBot(el, h.text, h.sources, true);
+    return el;
+  }
+  function fillBot(el, text, sources, final) {
+    el.querySelector('.md').innerHTML = md(visible(text));
+    el.querySelectorAll('.sources,.opts').forEach((n) => n.remove());
+    if (!final) return;
+    if (sources?.length) {
+      const s = document.createElement('div'); s.className = 'sources';
+      s.innerHTML = '<b>Sources</b>' + sources.map((x) => `<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer" title="${esc(x.title || x.url)}">${esc((x.title || new URL(x.url).hostname).slice(0, 60))}</a>`).join('');
+      el.appendChild(s);
+    }
+    const m = text.match(OPTS_RE);
+    if (m && el === thread.lastElementChild) {
+      const o = document.createElement('div'); o.className = 'opts';
+      m[1].split('|').map((x) => x.trim()).filter(Boolean).slice(0, 6).forEach((label) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+        b.addEventListener('click', () => ask(label));
+        o.appendChild(b);
+      });
+      el.appendChild(o);
+    }
+  }
+  function renderAll() {
+    thread.innerHTML = '';
+    history.forEach((h) => (h.role === 'user' ? renderUser(h) : renderBot(h)));
+    setChatting(history.length > 0);
+    requestAnimationFrame(scrollDown);
+  }
+  renderAll();
+
+  // ------------------------------------------------------------ attachments
+  let files = []; // {name, block}
+  const pillBox = $('#attachments');
+  function renderPills() {
+    pillBox.innerHTML = '';
+    files.forEach((f, i) => {
+      const p = document.createElement('span'); p.className = 'pill';
+      p.innerHTML = `<span></span><button type="button" aria-label="Remove">×</button>`;
+      p.firstChild.textContent = f.name;
+      p.lastChild.addEventListener('click', () => { files.splice(i, 1); renderPills(); });
+      pillBox.appendChild(p);
+    });
+    pillBox.classList.toggle('has', files.length > 0);
+  }
+  const readAs = (file, how) => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r[how](file); });
+  async function imageBlock(file) {
+    const url = await readAs(file, 'readAsDataURL');
+    const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+    const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: c.toDataURL('image/jpeg', 0.86).split(',')[1] } };
+  }
+  $('#attach').addEventListener('click', () => $('#file').click());
+  $('#file').addEventListener('change', async (e) => {
+    for (const file of [...e.target.files].slice(0, 8)) {
+      try {
+        if (file.type.startsWith('image/')) files.push({ name: file.name, block: await imageBlock(file) });
+        else if (file.type === 'application/pdf' || /\.pdf$/i.test(file.name)) {
+          if (file.size > 20e6) { alert(`${file.name} is over 20 MB.`); continue; }
+          const data = (await readAs(file, 'readAsDataURL')).split(',')[1];
+          files.push({ name: file.name, block: { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data } } });
+        } else {
+          const text = await readAs(file, 'readAsText');
+          files.push({ name: file.name, block: { type: 'text', text: `Attached file "${file.name}":\n\n${text.slice(0, 150000)}` } });
+        }
+      } catch { alert(`Couldn't read ${file.name}.`); }
+    }
+    e.target.value = '';
+    renderPills();
+    input.focus();
+  });
+
+  // ------------------------------------------------------------ live search toggle
+  let search = store.get('aa.search', true);
+  const modelBtn = $('#model');
+  const paintModel = () => { modelBtn.dataset.on = String(search); $('#modelLabel').textContent = search ? 'Live Search' : 'Fleet Only'; modelBtn.title = search ? 'Live web search is on' : 'Answers from your fleet data only'; };
+  paintModel();
+  modelBtn.addEventListener('click', () => { search = !search; store.set('aa.search', search); paintModel(); });
+
+  // ------------------------------------------------------------ asking
+  let controller = null;
+  function toApi() {
+    return history.map((h) => ({ role: h.role, content: h.role === 'user' && h.files?.length ? `${h.text}\n\n[Attached earlier: ${h.files.join(', ')}]` : h.text }));
+  }
+  async function ask(text) {
+    text = (text || '').trim();
+    if (controller) return;
+    if (!text && !files.length) { input.focus(); return; }
+    if (!text) text = 'Take a look at what I attached and tell me what matters.';
+    const sending = files; files = []; renderPills();
+    const userTurn = { role: 'user', text, files: sending.map((f) => f.name) };
+    const priorForApi = toApi();
+    history.push(userTurn);
+    input.value = ''; autosize();
+    setChatting(true);
+    renderUser(userTurn);
+    const bot = { role: 'assistant', text: '', sources: [] };
+    const el = document.createElement('div');
+    el.className = 'msg bot';
+    el.innerHTML = '<div class="md"></div><div class="status"><i></i><span>Thinking…</span></div>';
+    thread.appendChild(el);
+    scrollDown();
+
+    const content = sending.length ? [...sending.map((f) => f.block), { type: 'text', text }] : text;
+    controller = new AbortController();
+    card.classList.add('busy');
+    $('#send').setAttribute('aria-label', 'Stop');
+    let raf = 0;
+    const paint = () => { raf = 0; const nearBottom = thread.scrollHeight - thread.scrollTop - thread.clientHeight < 140; fillBot(el, bot.text, null, false); if (nearBottom) scrollDown(); };
+    const setStatus = (t) => { const s = el.querySelector('.status'); if (s) s.querySelector('span').textContent = t; };
+    try {
+      const res = await api('/api/chat', { method: 'POST', body: JSON.stringify({ messages: [...priorForApi, { role: 'user', content }], search }), signal: controller.signal });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || `Server error ${res.status}`);
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let idx;
+        while ((idx = buf.indexOf('\n\n')) >= 0) {
+          const chunk = buf.slice(0, idx); buf = buf.slice(idx + 2);
+          if (!chunk.startsWith('data: ')) continue;
+          const ev = JSON.parse(chunk.slice(6));
+          if (ev.type === 'text') { bot.text += ev.text; if (!raf) raf = requestAnimationFrame(paint); setStatus('Writing…'); }
+          else if (ev.type === 'status') setStatus(ev.text);
+          else if (ev.type === 'sources') ev.items.forEach((s) => { if (!bot.sources.some((x) => x.url === s.url)) bot.sources.push(s); });
+          else if (ev.type === 'changed') { if (drawerKind === ev.what) openDrawer(ev.what); }
+          else if (ev.type === 'error') bot.text += (bot.text ? '\n\n' : '') + `**Heads up:** ${ev.text}`;
+        }
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError' && err.message !== 'locked') bot.text += (bot.text ? '\n\n' : '') + `**Heads up:** ${err.message === 'Failed to fetch' ? "I can't reach the Advisor server. Make sure it's running, then try again." : err.message}`;
+    } finally {
+      if (raf) cancelAnimationFrame(raf);
+      controller = null;
+      card.classList.remove('busy');
+      $('#send').setAttribute('aria-label', 'Ask');
+      el.querySelector('.status')?.remove();
+      if (!bot.text.trim()) bot.text = '_Stopped._';
+      bot.sources = bot.sources.slice(0, 8);
+      history.push(bot);
+      fillBot(el, bot.text, bot.sources, true);
+      persist();
+      scrollDown();
+    }
+  }
+
+  function autosize() {
+    if (getComputedStyle(input).position === 'absolute') return;
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 180) + 'px';
+  }
+  input.addEventListener('input', autosize);
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); ask(input.value); }
+  });
+  $('#send').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (controller) controller.abort(); else ask(input.value);
+  });
+  const shortPh = () => { input.placeholder = innerWidth < 600 ? 'Ask me anything about the fleet…' : 'Should I swap an Aviator for a new XTS? Ask me anything about the fleet...'; };
+  shortPh(); addEventListener('resize', shortPh);
+
+  // ------------------------------------------------------------ actions
+  const PROMPTS = {
+    swap: 'Which vehicles should I swap out first, and what should replace them? Rank them, show the math, and tell me the timing.',
+    idle: "Which of my vehicles are underused, and exactly how can I make more money with each of them in the next 30 days?",
+    play: "Give me today's highest-probability profit play for Absolute Transportation: something I can start today, based on the season, my fleet and my market.",
+    playbook: 'Build me a 90-day playbook to grow Absolute Transportation\'s profit: fleet moves, pricing, and new contracts, ranked by impact and likelihood of success.',
+    seasons: "What's coming up in the next 60 days between Boston and New Jersey (events, holidays, peak travel dates), and how should I price and position the fleet for each? Use live search.",
+  };
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-act]');
+    if (!t) return;
+    e.preventDefault();
+    const act = t.dataset.act;
+    $('#menu').checked = false;
+    if (PROMPTS[act]) return ask(PROMPTS[act]);
+    if (act === 'fleet' || act === 'notes') return openDrawer(act);
+    if (act === 'new' || act === 'home') {
+      if (controller) controller.abort();
+      if (act === 'new' || history.length) { history = []; store.del('aa.thread'); renderAll(); }
+      input.focus();
+    }
+  });
+
+  // ------------------------------------------------------------ drawer: fleet + notes
+  const drawer = $('#drawer');
+  let drawerKind = null;
+  function closeDrawer() { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); drawerKind = null; }
+  drawer.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeDrawer(); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
+  const fmt = (n) => Number(n).toLocaleString('en-US');
+
+  async function openDrawer(kind) {
+    drawerKind = kind;
+    drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false');
+    const body = $('#drawerBody');
+    if (kind === 'fleet') {
+      $('#drawerTitle').textContent = 'Your fleet';
+      $('#drawerSub').textContent = 'Sorted by replacement priority. Tap any vehicle for a verdict.';
+      body.innerHTML = '<div class="empty">Loading…</div>';
+      try {
+        const r = await (await api('/api/fleet')).json();
+        const s = r.summary;
+        const list = r.vehicles.slice().sort((a, b) => b.replacePriority - a.replacePriority);
+        body.innerHTML = `
+          <div class="tiles">
+            <div class="tile"><b>${s.activeCount}</b><span>active units</span></div>
+            <div class="tile"><b>${s.over200k}</b><span>at 200k+ mi</span></div>
+            <div class="tile"><b>${fmt(Math.round(s.avgMiles / 1000))}k</b><span>avg miles</span></div>
+            <div class="tile"><b>${s.avgAge}</b><span>avg age (yrs)</span></div>
+          </div>
+          <input class="search" id="fleetSearch" placeholder="Search: Aviator, L01588L, Mach-E, 200k…" aria-label="Search fleet">
+          <div class="vlist" id="vlist"></div>
+          <p class="empty">Roster from the GPS tracker, updated ${esc(r.updated)}. Tell the Advisor about new mileage, sales or purchases and it keeps this list current.</p>`;
+        const vlist = $('#vlist');
+        const draw = (q) => {
+          q = (q || '').toLowerCase();
+          vlist.innerHTML = '';
+          list.filter((v) => !q || `${v.nickname} ${v.year} ${v.make} ${v.model} ${v.plate} ${v.segment} ${v.flags.join(' ')} ${v.status}`.toLowerCase().includes(q)).forEach((v) => {
+            const b = document.createElement('button');
+            b.type = 'button'; b.className = 'v';
+            b.innerHTML = `<span><span class="t"></span><br><span class="m"></span></span><span><span class="mi">${fmt(v.miles)} mi</span><br><span class="m">~${fmt(Math.round(v.milesPerYear / 1000))}k/yr</span></span><span class="bar"><i style="width:${v.replacePriority}%"></i></span><span class="fl"></span>`;
+            b.querySelector('.t').textContent = `${v.year} ${v.make} ${v.model}`;
+            b.querySelector('.m').textContent = `${v.nickname}${v.plate && !v.nickname.includes(v.plate) ? ' · ' + v.plate : ''} · ${v.segment}${v.status !== 'active' ? ' · ' + v.status.toUpperCase() : ''}${v.role ? ' · ' + v.role : ''}`;
+            const fl = b.querySelector('.fl');
+            v.flags.forEach((f) => { const em = document.createElement('em'); em.textContent = f; if (/replace|exit|heavy/.test(f)) em.className = 'hot'; fl.appendChild(em); });
+            b.addEventListener('click', () => {
+              closeDrawer();
+              ask(`Give me your verdict on #${v.id}, ${v.nickname} (${v.year} ${v.make} ${v.model}${v.plate ? ', ' + v.plate : ''}, ${fmt(v.miles)} mi): keep, reassign, or sell? What's it worth, and what should replace it?`);
+            });
+            vlist.appendChild(b);
+          });
+        };
+        draw('');
+        $('#fleetSearch').addEventListener('input', (e) => draw(e.target.value));
+      } catch (e) { body.innerHTML = `<div class="empty err">Couldn't load the fleet. ${esc(e.message)}</div>`; }
+    } else {
+      $('#drawerTitle').textContent = 'What I remember';
+      $('#drawerSub').textContent = 'Facts I use in every answer. Remove anything that is out of date.';
+      body.innerHTML = '<div class="empty">Loading…</div>';
+      try {
+        const notes = await (await api('/api/notes')).json();
+        if (!notes.length) {
+          body.innerHTML = `<div class="empty">Nothing saved yet. As we talk, I'll remember what matters: your rates, which cars do which jobs, your key clients and goals. You can also just tell me: “Remember that our airport rate to JFK is $325.”</div>`;
+          return;
+        }
+        body.innerHTML = '';
+        notes.slice().reverse().forEach((n) => {
+          const row = document.createElement('div'); row.className = 'note';
+          row.innerHTML = `<p></p><button class="x" type="button" aria-label="Delete note">×</button>`;
+          row.querySelector('p').textContent = n.text;
+          const small = document.createElement('small'); small.textContent = `${n.category || 'general'} · ${n.date}`;
+          row.querySelector('p').appendChild(small);
+          row.querySelector('button').addEventListener('click', async () => {
+            await api(`/api/notes/${encodeURIComponent(n.id)}`, { method: 'DELETE' });
+            row.remove();
+          });
+          body.appendChild(row);
+        });
+      } catch (e) { body.innerHTML = `<div class="empty err">Couldn't load notes. ${esc(e.message)}</div>`; }
+    }
+  }
+})();
+</script>
+</body>
+</html>

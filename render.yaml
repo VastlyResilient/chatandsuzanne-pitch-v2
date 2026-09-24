@@ -1,0 +1,22 @@
+# One-click cloud hosting on Render: New → Blueprint → pick this repo.
+# The persistent disk keeps the roster and memory notes across deploys.
+services:
+  - type: web
+    name: absolute-advisor
+    runtime: node
+    plan: starter
+    rootDir: absolute-advisor
+    buildCommand: npm ci --omit=dev
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: APP_PASSWORD
+        sync: false
+      - key: DATA_DIR
+        value: /var/data
+    disk:
+      name: advisor-data
+      mountPath: /var/data
+      sizeGB: 1
