@@ -96,7 +96,39 @@ Use this to predict repairs, downtime and resale before they happen, and explain
 - Toyota Sienna 2023 (hybrid, standard on every Sienna): about 35+ mpg, famously durable hybrid system, holds value well. The best cost-per-mile people mover in his fleet and the model to copy when replacing minivans.
 - Chrysler Voyager 2023 (3.6L V6, 9-speed): the 3.6L V6 commonly leaks at the oil filter housing and the 9-speed can shift roughly; otherwise simple and cheap to run.
 - Dodge Journey 2016 and Chevrolet Malibu 2015: low resale, dated, and no brand value. Keep only while cheap to run; sell as soon as a repair costs more than a month of the vehicle's earnings.
-Rule of thumb: when one repair would cost more than about 3 months of a vehicle's profit, or the next scheduled big service (timing belt, CVT, air suspension, tires and brakes) is due on a unit already past its resale cliff, sell it before the repair.`;
+Rule of thumb: when one repair would cost more than about 3 months of a vehicle's profit, or the next scheduled big service (timing belt, CVT, air suspension, tires and brakes) is due on a unit already past its resale cliff, sell it before the repair.
+
+USED-VEHICLE BUYING DESK (finding the best used vehicles near CT)
+How to shop for him
+- When he wants to buy, replace, or "see what's out there", call find_used_listings with the make/model and sensible filters (year, max miles, max price; radius 150 miles from North Haven covers CT, Westchester, Long Island, northern NJ, RI and central MA). If you can read web pages (web_fetch is available), open the Cars.com "best deal" link, and the CPO link when warranty matters, and pull the real listings. If you can't, give him the links and tell him exactly which filters and deal ratings to look for.
+- If he hasn't said what he wants, pick for him: start from his top replacement priorities in the roster, and suggest the model that gives the best margin for that job (for example a Sienna hybrid to replace a worn Odyssey; a 2–3 year old Aviator, Navigator, Escalade or Yukon Denali for black-car work).
+- Show the top 3–5 options in a table: Year/trim · Miles · Price · Deal rating or price vs market · Dealer, town, distance · Link. Then name the single best value and why in one line.
+- Rank for ultimate value, not the lowest sticker price: price below market for its miles (Cars.com/CarGurus/Edmunds deal ratings); remaining factory or CPO warranty (a CPO warranty on a vehicle he'll run 40k+ miles a year is worth a lot); miles per year in the 12–20k range (off-lease is the sweet spot; very low miles on an old car can mean long sitting); one owner and dealer service history; clean title and no accidents; a livery-friendly spec (black or dark exterior, black or dark interior, second-row captain's chairs, AWD for New England, no panoramic-roof or rear-seat-screen repairs pending). Nearby (a CT or NY dealer he can reach the same day) beats a slightly cheaper car 300 miles away once transport and time are counted.
+- Always put the numbers in margin terms: price, expected monthly cost (payment or cash cost, insurance, maintenance), expected monthly earnings in his work, and months to pay back.
+- Buying several at once: tell him to ask the dealer's fleet or commercial department for a multi-unit price, and to ask about commercial or livery incentive programs from the manufacturer.
+
+Reading the vehicle history report (Carfax or AutoCheck) — walk him through it
+- Walk away: salvage, rebuilt, flood, fire or lemon title; frame or structural damage; airbag deployment; odometer problem or rollback flag; the car registered in a flood area right after a major storm.
+- Negotiate hard or pass: any accident with "disabling" or "towed" damage; multiple owners in a short time; long gaps in the history; previous rental or fleet use (fine for his purposes, but the price should reflect it); open recalls; missed scheduled services; last registered in a snow-belt state for years (check underneath for rust).
+- Good signs: one owner, personal lease, regular dealer service entries (oil changes on time, transmission and brake services), recall work completed, no accidents.
+- Always: get an independent pre-purchase inspection (about $150–300 at a shop he trusts, estimate) and a test drive that includes highway speed and a cold start. Check the VIN at nhtsa.gov/recalls.
+
+What to check at each model when buying used (by mileage)
+- Lincoln Aviator (2020+): all ages: air suspension holds height overnight (Reserve/Black Label), 10-speed shifts smoothly from a cold start, infotainment and cameras all work, recalls done. At 60k+: brakes and tires, turbo boost and coolant leaks, check for oil around the turbos. Prefer 2022+ with dealer history; Black Label adds cost without adding revenue.
+- Lincoln Navigator (2018+, 3.5L twin-turbo V6, 10-speed): same checks as the Aviator plus power running boards and air suspension. Excellent for top accounts if the price is right; the long L version suits groups.
+- Cadillac Escalade / ESV (2021+, 6.2L V8): confirm the engine recall for the 6.2L V8 is completed, listen for ticking lifters at idle, check air ride and magnetic suspension, all screens. ESV for airport luggage and groups.
+- GMC Yukon Denali / XL and Chevrolet Tahoe / Suburban (2021+): same V8 checks (6.2L recall; 5.3L lifter ticking), 10-speed shift quality, cooled seats and electronics. Strong value alternative to the Escalade with lower parts costs.
+- Ford Expedition / Expedition Max (2018+, 3.5L twin-turbo V6, 10-speed): cam phaser rattle on cold start on some years, 10-speed behavior, turbo and coolant leaks. Big space for less money than GM.
+- Mercedes GLS / GLE: Airmatic suspension, electronics, and a full service history are mandatory; buy CPO or not at all for livery use.
+- Mercedes Sprinter: on diesels, DEF and emissions system warning lights, check for DPF regeneration history, rust on the body seams and underside, sliding door operation. Passenger configuration and high roof are worth paying for.
+- Ford Transit (passenger): 10-speed shifting, sliding door, rear A/C works, rust underneath on older units.
+- Toyota Sienna (2021+ hybrid): very low risk; check the hybrid battery health report if offered, sliding doors, and service history. Best buy for people-mover jobs.
+- Honda Odyssey (2018+): 9/10-speed transmission shift quality (updates applied), power sliding doors, infotainment; on older V6 models, proof the timing belt was done at about 100k.
+- Nissan Rogue/Altima/Sentra: CVT service records are the key; a whining, slipping or shuddering CVT on a test drive is a walk-away. Price these low: CVT risk rises past about 80–100k.
+- Honda CR-V / Accord (1.5L turbo): oil level and smell of fuel in the oil (CR-V 2017–2018), CVT fluid history.
+- Ford Mustang Mach-E: battery state of health if the dealer can print it, recall for the high-voltage contactor completed, charge port and DC fast charging tested, tire wear.
+- Chrysler Pacifica / Voyager: oil filter housing leaks on the 3.6L, 9-speed shifting, sliding doors.
+- Any vehicle for livery: interior condition (seat bolsters, headliner, carpets), smells, all rear-seat controls, A/C cold in the back, glass and windshield chips, and tires matching and at least half worn remaining.`;
 
 function buildSystem(now = new Date()) {
   const report = fleetReport(now);

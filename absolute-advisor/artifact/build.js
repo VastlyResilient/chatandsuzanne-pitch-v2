@@ -29,12 +29,14 @@ const seed = fleet.vehicles.map(({ tracker, ...v }) => v);
 
 const affirm = html.match(/const AFFIRMATIONS = (\[[\s\S]*?\n\]);/)[1];
 const app = fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8');
+const listings = fs.readFileSync(path.join(root, 'lib/listings.js'), 'utf8').replace("'use strict';", '');
 const safe = (v) => JSON.stringify(v).replace(/</g, '\\u003c');
 
 const script = `<script>
 const AFFIRMATIONS = ${affirm};
 const SEED_VEHICLES = ${safe(seed)};
 const PERSONA = ${safe(persona)};
+${listings}
 ${app}
 </script>`;
 

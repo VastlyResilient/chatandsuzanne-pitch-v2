@@ -93,7 +93,7 @@ body{
 }
 .links a{
   font-family:var(--font-text);font-size:calc(var(--links-fs)*var(--u));font-weight:var(--w-nav);
-  letter-spacing:var(--nav-ls);line-height:1.2;color:#fff;
+  letter-spacing:var(--nav-ls);line-height:1.2;color:#fff;white-space:nowrap;
   text-shadow:0 calc(1*var(--u)) calc(12*var(--u)) rgba(0,0,0,.32);
   transition:opacity .18s ease;
 }
@@ -483,6 +483,7 @@ body{
   .anim .links a:nth-child(2){animation-delay:.21s}
   .anim .links a:nth-child(3){animation-delay:.26s}
   .anim .links a:nth-child(4){animation-delay:.31s}
+  .anim .links a:nth-child(5){animation-delay:.36s}
   .anim .nav>.cta{animation:e-settle-down .55s var(--e-soft) .34s both}
   .anim .h1{animation:e-focus 1s var(--e-primary) .30s both;will-change:transform,opacity}
   .anim .affirm{animation:e-settle-up .7s var(--e-soft) .52s both}
@@ -517,6 +518,7 @@ body{
       <nav class="links" aria-label="Primary">
         <a href="#" data-act="fleet">Fleet</a>
         <a href="#" data-act="playbook">Playbook</a>
+        <a href="#" data-act="buy">Buy Used</a>
         <a href="#" data-act="seasons">Seasons</a>
         <a href="#" data-act="notes">Notes</a>
       </nav>
@@ -527,6 +529,7 @@ body{
     <div class="sheet"><div><div class="sheet-panel">
       <a href="#" data-act="fleet">Fleet</a>
       <a href="#" data-act="playbook">Playbook</a>
+      <a href="#" data-act="buy">Buy Used</a>
       <a href="#" data-act="seasons">Seasons</a>
       <a href="#" data-act="notes">Notes</a>
       <a class="cta" href="#" data-act="new"><span>New Chat</span></a>
@@ -1243,6 +1246,7 @@ const AFFIRMATIONS = [
     idle: "Which of my vehicles are underused, and exactly how can I make more money with each of them in the next 30 days?",
     play: "Give me today's highest-probability profit play for Absolute Transportation: something I can start today, based on the season, my fleet and my market.",
     playbook: 'Build me a 90-day playbook to grow Absolute Transportation\'s profit: fleet moves, pricing, and new contracts, ranked by impact and likelihood of success.',
+    buy: 'Find me the best-value used vehicles to buy near Connecticut right now for my fleet. Start with what I should replace first, pull live listings, rank the top options with links, and tell me exactly what to check on each before I buy.',
     seasons: "What's coming up in the next 60 days between Boston and New Jersey (events, holidays, peak travel dates), and how should I price and position the fleet for each? Use live search.",
   };
   document.addEventListener('click', (e) => {

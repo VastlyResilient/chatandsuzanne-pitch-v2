@@ -18,6 +18,7 @@ const { fleetReport, updateVehicle, addVehicle } = require('./lib/fleet');
 const { loadNotes, addNote, deleteNote } = require('./lib/notes');
 const { buildSystem } = require('./lib/prompt');
 const { demoAnswer } = require('./lib/demo');
+const { usedListingLinks } = require('./lib/listings');
 
 const PORT = Number(process.env.PORT) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -104,6 +105,25 @@ const CLIENT_TOOLS = [
       required: ['year', 'make', 'model'],
     },
   },
+  {
+    name: 'find_used_listings',
+    description:
+      'Build live used-vehicle search links (Cars.com sorted by best deal, Cars.com CPO, Edmunds, Autotrader, CarMax, Carvana) centered on North Haven, CT, with year, mileage, price and distance filters. After calling it, use web_fetch on the Cars.com link(s) to read the actual listings (price, miles, deal rating, dealer, distance), then rank them.',
+    eager_input_streaming: true,
+    input_schema: {
+      type: 'object',
+      properties: {
+        make: { type: 'string', description: 'e.g. "Lincoln"' },
+        model: { type: 'string', description: 'e.g. "Aviator", "Escalade ESV", "Sienna"' },
+        year_min: { type: 'integer' },
+        year_max: { type: 'integer' },
+        max_miles: { type: 'integer' },
+        max_price: { type: 'integer' },
+        radius_miles: { type: 'integer', description: 'Search radius from North Haven, default 150' },
+      },
+      required: ['make', 'model'],
+    },
+  },
 ];
 
 function runClientTool(name, input) {
@@ -129,6 +149,10 @@ function runClientTool(name, input) {
       const v = addVehicle(input);
       return { result: JSON.stringify(v), status: `Added #${v.id} to the roster`, changed: 'fleet' };
     }
+    case 'find_used_listings': {
+      const out = usedListingLinks(input);
+      return { result: JSON.stringify(out), status: `Searching used ${out.search.make} ${out.search.model} listings near CT…`, changed: null };
+    }
     default:
       throw new Error(`Unknown tool ${name}`);
   }
@@ -140,7 +164,7 @@ function serverTools(search) {
     {
       type: 'web_search_20260209',
       name: 'web_search',
-      max_uses: 8,
+      max_uses: 12,
       user_location: {
         type: 'approximate',
         city: 'North Haven',
@@ -149,7 +173,7 @@ function serverTools(search) {
         timezone: 'America/New_York',
       },
     },
-    { type: 'web_fetch_20260209', name: 'web_fetch', max_uses: 5 },
+    { type: 'web_fetch_20260209', name: 'web_fetch', max_uses: 10 },
   ];
 }
 
@@ -361,7 +385,7 @@ async function handleChat(req, res) {
       try {
         const out = runClientTool(tu.name, tu.input);
         emit({ type: 'status', text: out.status });
-        emit({ type: 'changed', what: out.changed });
+        if (out.changed) emit({ type: 'changed', what: out.changed });
         results.push({ type: 'tool_result', tool_use_id: tu.id, content: out.result });
       } catch (e) {
         results.push({ type: 'tool_result', tool_use_id: tu.id, is_error: true, content: String(e.message || e) });

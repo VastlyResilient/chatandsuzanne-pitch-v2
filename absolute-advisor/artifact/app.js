@@ -188,6 +188,12 @@ By make: ${Object.entries(s.byMake).map(([k, c]) => `${k} ${c}`).join(', ')}`;
         return v;
       },
     },
+    {
+      name: 'find_used_listings',
+      description: 'Build used-vehicle search links (Cars.com sorted by best deal, Cars.com CPO, Edmunds, Autotrader, CarMax, Carvana) near North Haven, CT with year, mileage, price and distance filters. You cannot open them in this version: give Komal the links and tell him exactly what to look for on each.',
+      inputSchema: { type: 'object', properties: { make: { type: 'string' }, model: { type: 'string' }, year_min: { type: 'integer' }, year_max: { type: 'integer' }, max_miles: { type: 'integer' }, max_price: { type: 'integer' }, radius_miles: { type: 'integer' } }, required: ['make', 'model'] },
+      execute(i) { const out = usedListingLinks(i); onChanged(null, `Building ${out.search.make} ${out.search.model} searches…`); return out; },
+    },
   ];
 
   // ------------------------------------------------------------ Claude
@@ -387,7 +393,7 @@ By make: ${Object.entries(s.byMake).map(([k, c]) => `${k} ${c}`).join(', ')}`;
     thread.appendChild(el);
     scrollDown();
     const setStatus = (t) => { const s = el.querySelector('.status span'); if (s) s.textContent = t; };
-    onChanged = (what, label) => { setStatus(label); if (drawerKind === what) openDrawer(what); };
+    onChanged = (what, label) => { setStatus(label); if (what && drawerKind === what) openDrawer(what); };
 
     if (!sample) {
       bot.text = 'The Advisor answers through Claude. Open this link in a browser where you are signed in to claude.ai, then ask again.';
@@ -451,6 +457,7 @@ By make: ${Object.entries(s.byMake).map(([k, c]) => `${k} ${c}`).join(', ')}`;
     idle: 'Which of my vehicles are underused, and exactly how can I make more money with each of them in the next 30 days?',
     play: "Give me today's highest-probability profit play for Absolute Transportation: something I can start today, based on the season, my fleet and my market.",
     playbook: "Build me a 90-day playbook to grow Absolute Transportation's profit: fleet moves, pricing, and new contracts, ranked by impact and likelihood of success.",
+    buy: 'Find me the best-value used vehicles to buy near Connecticut right now for my fleet. Start with what I should replace first, show the top listings with links, and tell me exactly what to check on each before I buy.',
     seasons: "What's coming up in the next 60 days between Boston and New Jersey (events, holidays, peak travel dates), and how should I price and position the fleet for each?",
   };
   document.addEventListener('click', (e) => {
