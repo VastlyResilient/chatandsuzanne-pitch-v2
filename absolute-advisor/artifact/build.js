@@ -1,6 +1,7 @@
 // Builds the claude.ai Artifact version of the Advisor from public/index.html:
 //   node artifact/build.js <outDir>
 // Writes <outDir>/index.html. Publish it with lake.mp4 (the background video)
+// and public/logo.webp
 // beside it, declaring capabilities {sample: {}}.
 'use strict';
 

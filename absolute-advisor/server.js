@@ -386,7 +386,7 @@ function friendlyError(err) {
 
 // ---------------------------------------------------------------- routes
 
-const STATIC_TYPES = { '.html': 'text/html; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' };
+const STATIC_TYPES = { '.html': 'text/html; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' };
 
 function serveStatic(req, res, pathname) {
   const rel = pathname === '/' ? 'index.html' : pathname.slice(1);

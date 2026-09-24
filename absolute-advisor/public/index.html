@@ -85,8 +85,7 @@ body{
   font-size:calc(var(--brand-fs)*var(--u));font-weight:var(--w-brand);letter-spacing:var(--brand-ls);
   text-shadow:0 calc(1*var(--u)) calc(10*var(--u)) rgba(0,0,0,.30);
 }
-.brand .mark{width:calc(var(--mark)*var(--u));height:calc(var(--mark)*var(--u));flex:none}
-.brand .word{transform:translateY(calc(1*var(--u)))}
+.brand .logo{height:calc(46*var(--u));width:auto;flex:none;filter:drop-shadow(0 calc(1*var(--u)) calc(8*var(--u)) rgba(0,0,0,.35))}
 .links{
   position:absolute;left:50%;transform:translateX(-50%);
   top:calc((var(--links-y) - 41)*var(--u));
@@ -354,7 +353,7 @@ body{
   .frame{padding:clamp(24px,3.4vh,44px) clamp(28px,4.2vw,60px) clamp(26px,4.4vh,56px)}
   .chatting.frame{padding-bottom:clamp(18px,2.6vh,32px)}
   .brand{font-size:clamp(15px,1.7vw,18.49px);gap:clamp(9px,1vw,12px)}
-  .brand .mark{width:clamp(28px,3vw,34px);height:clamp(28px,3vw,34px)}
+  .brand .logo{height:clamp(30px,3.6vw,42px)}
   .links{top:50%;transform:translate(-50%,-50%);gap:clamp(18px,3.4vw,50px)}
   .links a{font-size:clamp(14px,1.75vw,21.69px)}
   .cta{width:clamp(108px,11.5vw,140px);height:clamp(36px,3.8vw,43px);font-size:clamp(13px,1.35vw,15.7px);margin-top:0;align-self:center}
@@ -402,7 +401,7 @@ body{
   .chatting.frame{padding-bottom:max(12px,env(safe-area-inset-bottom))}
   .links,.nav>.cta{display:none}
   .brand{font-size:17px;gap:10px}
-  .brand .mark{width:30px;height:30px}
+  .brand .logo{height:30px}
   .burger{
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
     width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);cursor:pointer;
@@ -479,7 +478,6 @@ body{
 @keyframes e-send{from{transform:scale(.82)}}
 @media (prefers-reduced-motion:no-preference){
   .anim .brand{animation:e-settle-down .58s var(--e-soft) .06s both}
-  .anim .brand .mark{animation:e-mark .62s var(--e-primary) .06s both}
   .anim .links a{animation:e-settle-down .50s var(--e-soft) both}
   .anim .links a:nth-child(1){animation-delay:.16s}
   .anim .links a:nth-child(2){animation-delay:.21s}
@@ -513,9 +511,8 @@ body{
     <input type="checkbox" id="menu" aria-label="Toggle menu">
 
     <header class="nav">
-      <a class="brand" href="#" aria-label="Absolute Advisor home" data-act="home">
-        <svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="17" fill="#9C86CE"/><circle cx="17" cy="17" r="8.6" fill="#FFFFFF"/><circle cx="17" cy="17" r="3.7" fill="#151519"/></svg>
-        <span class="word">Absolute</span>
+      <a class="brand" href="#" aria-label="Absolute Transportation home" data-act="home">
+        <img class="logo" src="logo.webp" alt="Absolute Transportation" width="1200" height="273">
       </a>
       <nav class="links" aria-label="Primary">
         <a href="#" data-act="fleet">Fleet</a>
